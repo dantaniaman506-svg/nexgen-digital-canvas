@@ -1,24 +1,47 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Hero } from "@/components/site/sections/Hero";
+import { About } from "@/components/site/sections/About";
+import { ReviewsMarquee } from "@/components/site/sections/ReviewsMarquee";
+import { Services } from "@/components/site/sections/Services";
+import { WhyUs } from "@/components/site/sections/WhyUs";
+import { Industries } from "@/components/site/sections/Industries";
+import { Results } from "@/components/site/sections/Results";
+import { FAQ } from "@/components/site/sections/FAQ";
+import { Contact } from "@/components/site/sections/Contact";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Nexgen — Digital Marketing & Growth Agency in Ahmedabad" },
+      {
+        name: "description",
+        content:
+          "Creative digital marketing agency in Ahmedabad. Social media, SEO, Google & Meta ads, websites and branding — all in one growth engine.",
+      },
+      { property: "og:title", content: "Nexgen — Digital Marketing & Growth Agency" },
+      {
+        property: "og:description",
+        content:
+          "We turn ideas into impact. Social media, SEO, ads, websites & apps — engineered to grow your brand.",
+      },
+      { property: "og:url", content: "/" },
+    ],
+  }),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function HomePage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <Hero />
+      <About />
+      <ReviewsMarquee />
+      <Services />
+      <WhyUs />
+      <Industries />
+      <Results />
+      <FAQ />
+      <Contact />
+    </>
   );
 }
