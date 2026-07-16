@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { GradientBlobs } from "@/components/site/GradientBlobs";
-import { getServiceBySlug, services } from "@/lib/site-data";
+import { getServiceBySlug, services, type Service } from "@/lib/site-data";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }) => {
