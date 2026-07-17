@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Phone, ShieldCheck } from "lucide-react";
+import { Sparkles, ArrowRight, Phone, ShieldCheck, ChevronDown } from "lucide-react";
 import { CONTACT, BRAND } from "@/lib/site-data";
 import { GradientBlobs } from "../GradientBlobs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Hero() {
   return (
@@ -52,13 +58,53 @@ export function Hero() {
             Get a Free Growth Plan
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
-          <a
-            href={`tel:${CONTACT.phone1Tel}`}
-            className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-foreground transition-transform hover:scale-[1.02]"
-          >
-            <Phone className="h-4 w-4 text-brand-blue" />
-            Call Us Now
-          </a>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-foreground transition-transform hover:scale-[1.02]"
+              >
+                <Phone className="h-4 w-4 text-brand-blue" />
+                Call Us Now
+                <ChevronDown className="h-4 w-4 text-brand-blue" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="center"
+              sideOffset={10}
+              className="glass-strong min-w-[240px] rounded-2xl border-0 p-2 shadow-2xl"
+            >
+              <DropdownMenuItem asChild className="rounded-xl focus:bg-transparent">
+                <a
+                  href={`tel:${CONTACT.phone1Tel}`}
+                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--brand-blue)_14%,transparent)]"
+                >
+                  <span className="bg-brand-gradient flex h-9 w-9 items-center justify-center rounded-full text-white">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <span className="flex flex-col text-left">
+                    <span className="font-display text-sm font-semibold">{CONTACT.phone1}</span>
+                    <span className="text-[11px] text-muted-foreground">Primary line</span>
+                  </span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-xl focus:bg-transparent">
+                <a
+                  href={`tel:${CONTACT.phone2Tel}`}
+                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--brand-blue)_14%,transparent)]"
+                >
+                  <span className="bg-brand-gradient flex h-9 w-9 items-center justify-center rounded-full text-white">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <span className="flex flex-col text-left">
+                    <span className="font-display text-sm font-semibold">{CONTACT.phone2}</span>
+                    <span className="text-[11px] text-muted-foreground">Alternate line</span>
+                  </span>
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </motion.div>
 
         <motion.div

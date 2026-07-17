@@ -47,11 +47,11 @@
 :root {
   --radius: 1.25rem;
 
-  /* Nexgen brand — magenta → electric blue → cyan (from logo) */
-  --brand-magenta: oklch(0.66 0.28 340);
-  --brand-purple: oklch(0.52 0.26 290);
-  --brand-blue: oklch(0.58 0.24 265);
-  --brand-cyan: oklch(0.82 0.15 200);
+  /* Nexgen brand — electric blue mono system */
+  --brand-magenta: oklch(0.62 0.22 255);   /* deep electric blue */
+  --brand-purple: oklch(0.58 0.24 258);    /* electric blue */
+  --brand-blue: oklch(0.66 0.22 250);      /* bright blue */
+  --brand-cyan: oklch(0.82 0.16 220);      /* sky cyan */
 
   --ink: oklch(0.13 0.02 265);
   --cream: oklch(0.985 0.004 250);
@@ -121,15 +121,17 @@
 }
 
 @utility glass {
-  background-color: color-mix(in oklab, var(--card) 65%, transparent);
-  backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid color-mix(in oklab, var(--brand-blue) 22%, transparent);
+  background-color: color-mix(in oklab, var(--card) 42%, transparent);
+  backdrop-filter: blur(22px) saturate(160%);
+  
+  border: 1px solid color-mix(in oklab, var(--brand-blue) 24%, transparent);
 }
 
 @utility glass-strong {
-  background-color: color-mix(in oklab, var(--card) 85%, transparent);
-  backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid color-mix(in oklab, var(--brand-blue) 30%, transparent);
+  background-color: color-mix(in oklab, var(--card) 58%, transparent);
+  backdrop-filter: blur(28px) saturate(170%);
+  
+  border: 1px solid color-mix(in oklab, var(--brand-blue) 32%, transparent);
 }
 
 @utility brand-glow-shadow {
