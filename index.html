@@ -26,15 +26,11 @@
       rel="stylesheet"
     />
     <script>
-      // Default theme is DARK — apply before first paint to avoid flash
+      // Always dark — jellyfish video on every device, every visit
+      // Clear any old "light" preference so no phone gets the wrong background
       (function () {
-        var t = localStorage.getItem("nexgen-theme");
-        if (t === "light") {
-          // user explicitly chose light
-        } else {
-          document.documentElement.classList.add("dark");
-          if (!t) localStorage.setItem("nexgen-theme", "dark");
-        }
+        localStorage.removeItem("nexgen-theme");
+        document.documentElement.classList.add("dark");
       })();
     </script>
   </head>

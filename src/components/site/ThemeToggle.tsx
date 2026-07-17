@@ -12,12 +12,9 @@ export function ThemeToggle() {
   );
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    // Default to dark if no preference saved
-    const isDark = saved !== "light";
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
-    if (!saved) localStorage.setItem(STORAGE_KEY, "dark");
+    // index.html already applied dark before first paint.
+    // Just sync React state with the DOM — never override it from localStorage.
+    setDark(document.documentElement.classList.contains("dark"));
   }, []);
 
   const toggle = () => {
