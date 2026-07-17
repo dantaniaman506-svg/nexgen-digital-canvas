@@ -12,6 +12,11 @@ const items = [
   { to: "/contact", label: "Contact", icon: Send, sectionId: "contact" },
 ];
 
+/* Each button: 44px wide, 2px gap → 46px per step */
+const ITEM_SIZE = 44;
+const ITEM_GAP = 2;
+const STEP = ITEM_SIZE + ITEM_GAP;
+
 function getDefaultSection(pathname: string) {
   if (pathname === "/") return "hero";
   const match = items.find(
@@ -28,18 +33,16 @@ export function BottomNav() {
   const [visible, setVisible] = useState(false);
   const scrollSpyPaused = useRef(false);
 
-  // Delay mount animation
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 400);
     return () => clearTimeout(t);
   }, []);
 
-  // On route change update immediately
   useEffect(() => {
     setActiveSection(getDefaultSection(pathname));
   }, [pathname]);
 
-  // Scroll-spy on home page
+  /* Scroll-spy on home page only */
   useEffect(() => {
     if (pathname !== "/") return;
     const elements = items
@@ -50,10 +53,10 @@ export function BottomNav() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (scrollSpyPaused.current) return;
-        const visible = entries
+        const vis = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActiveSection(visible[0].target.id);
+        if (vis[0]) setActiveSection(vis[0].target.id);
       },
       { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.1, 0.5, 1] },
     );
@@ -61,7 +64,6 @@ export function BottomNav() {
     return () => observer.disconnect();
   }, [pathname]);
 
-  // Click: set active immediately, pause scroll-spy briefly
   const handleClick = useCallback((sectionId: string) => {
     setActiveSection(sectionId);
     scrollSpyPaused.current = true;
@@ -70,12 +72,9 @@ export function BottomNav() {
     }, 900);
   }, []);
 
+  const activeIndex = items.findIndex((i) => i.sectionId === activeSection);
+
   return (
-    /*
-     * IMPORTANT: centering wrapper is a plain div — NOT a motion element.
-     * Framer Motion's animated transforms would override translateX(-50%),
-     * shifting the pill off-center. The motion animation lives on the inner nav.
-     */
     <div
       style={{
         position: "fixed",
@@ -94,9 +93,10 @@ export function BottomNav() {
             exit={{ y: 60, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
             style={{
+              position: "relative",
               display: "flex",
               alignItems: "center",
-              gap: 2,
+              gap: ITEM_GAP,
               borderRadius: 9999,
               padding: "6px 8px",
               backdropFilter: "blur(24px) saturate(180%)",
@@ -110,7 +110,27 @@ export function BottomNav() {
               whiteSpace: "nowrap",
             }}
           >
-            {items.map((item) => {
+            {/* Single pill that slides to the active item — no layoutId needed */}
+            {activeIndex >= 0 && (
+              <motion.span
+                animate={{ x: activeIndex * STEP }}
+                transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.8 }}
+                style={{
+                  position: "absolute",
+                  left: 8,           /* matches nav horizontal padding */
+                  top: 6,            /* matches nav vertical padding */
+                  width: ITEM_SIZE,
+                  height: ITEM_SIZE,
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #4F7FFF 0%, #3EC6E0 100%)",
+                  boxShadow: "0 4px 18px -4px rgba(79,127,255,0.70)",
+                  zIndex: 0,
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+
+            {items.map((item, idx) => {
               const Icon = item.icon;
               const isActive =
                 pathname === "/"
@@ -130,42 +150,16 @@ export function BottomNav() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: 44,
-                    height: 44,
+                    width: ITEM_SIZE,
+                    height: ITEM_SIZE,
                     borderRadius: "50%",
                     flexShrink: 0,
                     color: isActive ? "#fff" : "var(--color-brand-blue)",
                     transition: "color 0.2s",
+                    zIndex: 1,
                   }}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId="pill-active"
-                      transition={{
-                        type: "spring",
-                        stiffness: 420,
-                        damping: 34,
-                      }}
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        borderRadius: "50%",
-                        background:
-                          "linear-gradient(135deg, #4F7FFF 0%, #3EC6E0 100%)",
-                        boxShadow: "0 4px 18px -4px rgba(79,127,255,0.70)",
-                        zIndex: 0,
-                      }}
-                    />
-                  )}
-                  <span
-                    style={{
-                      position: "relative",
-                      zIndex: 1,
-                      display: "flex",
-                    }}
-                  >
-                    <Icon size={20} strokeWidth={2.2} />
-                  </span>
+                  <Icon size={20} strokeWidth={2.2} />
                 </Link>
               );
             })}

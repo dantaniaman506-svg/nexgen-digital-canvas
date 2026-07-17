@@ -1,14 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { z } from "zod";
-import { Send, Check, ChevronDown, Phone, X } from "lucide-react";
+import { Send, Check, Phone, X } from "lucide-react";
 import { BRAND, CONTACT, services, industries } from "@/lib/site-data";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const schema = z.object({
-  name: z.string().trim().min(2, "Naam likhna zaroori hai").max(80),
-  business: z.string().trim().min(2, "Business naam likhna zaroori hai").max(120),
-  industry: z.string().trim().min(2, "Industry chunna zaroori hai").max(80),
-  service: z.string().trim().min(2, "Ek service choose karein").max(120),
-  phone: z.string().trim().min(6, "Valid phone number likhein").max(30),
+  name: z.string().trim().min(2, "Please enter your full name").max(80),
+  business: z.string().trim().min(2, "Please enter your business name").max(120),
+  industry: z.string().trim().min(2, "Please select an industry").max(80),
+  service: z.string().trim().min(2, "Please select a service").max(120),
+  phone: z.string().trim().min(6, "Please enter a valid phone number").max(30),
   message: z.string().trim().max(600).optional(),
 });
 
@@ -51,7 +58,6 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
     if (validated) setErrors((prev) => ({ ...prev, [k]: "" }));
   };
 
-  // Close modal on outside click
   useEffect(() => {
     if (!showRecipientModal) return;
     const handler = (e: MouseEvent) => {
@@ -88,7 +94,6 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
   };
 
   const sendToRecipient = (wa: string) => {
-    // wa.me requires digits only — strip +, spaces, dashes, etc.
     const waDigits = wa.replace(/\D/g, "");
     const industryValue =
       values.industry === "Other" ? values.industryCustom : values.industry;
@@ -100,7 +105,8 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
       `*Service Interested In:* ${values.service}`,
       `*Phone:* ${values.phone.trim()}`,
     ];
-    if (values.message.trim()) lines.push(`*Message:* ${values.message.trim()}`);
+    if (values.message.trim())
+      lines.push(`*Message:* ${values.message.trim()}`);
     const url = `https://wa.me/${waDigits}?text=${encodeURIComponent(lines.join("\n"))}`;
     window.open(url, "_blank");
     setShowRecipientModal(false);
@@ -109,8 +115,16 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
   const inputCls =
     "w-full rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm outline-none transition-colors focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 placeholder:text-muted-foreground/60";
 
-  const selectCls =
-    "w-full rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm outline-none transition-colors focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 appearance-none cursor-pointer";
+  /* Trigger styled to match the glass inputs */
+  const triggerCls =
+    "h-auto w-full rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm text-left transition-colors hover:border-brand-blue focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 data-[placeholder]:text-muted-foreground/60";
+
+  /* Dropdown content styled to match dark glass theme */
+  const contentCls =
+    "z-50 rounded-2xl border border-border bg-popover/95 backdrop-blur-xl shadow-xl p-1";
+
+  const itemCls =
+    "rounded-xl px-3 py-2 text-sm cursor-pointer focus:bg-brand-blue/10 focus:text-foreground data-[highlighted]:bg-brand-blue/10";
 
   const isOtherIndustry = values.industry === "Other";
 
@@ -130,7 +144,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
               className={inputCls}
               value={values.name}
               onChange={(e) => update("name", e.target.value)}
-              placeholder="Aapka poora naam"
+              placeholder="Your full name"
             />
             {errors.name && (
               <p className="mt-1 text-xs text-destructive">{errors.name}</p>
@@ -146,43 +160,45 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
               className={inputCls}
               value={values.business}
               onChange={(e) => update("business", e.target.value)}
-              placeholder="Aapki company ka naam"
+              placeholder="Your company name"
             />
             {errors.business && (
               <p className="mt-1 text-xs text-destructive">{errors.business}</p>
             )}
           </div>
 
-          {/* Industry */}
+          {/* Industry — custom Radix Select */}
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
               Industry
             </label>
-            <div className="relative">
-              <select
-                className={selectCls}
-                value={values.industry}
-                onChange={(e) => {
-                  update("industry", e.target.value);
-                  update("industryCustom", "");
-                }}
-              >
-                <option value="">— Industry chunein —</option>
+            <Select
+              value={values.industry}
+              onValueChange={(v) => {
+                update("industry", v);
+                update("industryCustom", "");
+              }}
+            >
+              <SelectTrigger className={triggerCls}>
+                <SelectValue placeholder="Select your industry" />
+              </SelectTrigger>
+              <SelectContent className={contentCls}>
                 {industryOptions.map((i) => (
-                  <option key={i} value={i}>
+                  <SelectItem key={i} value={i} className={itemCls}>
                     {i}
-                  </option>
+                  </SelectItem>
                 ))}
-                <option value="Other">Other (khud likhein)</option>
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            </div>
+                <SelectItem value="Other" className={itemCls}>
+                  Other — type your own
+                </SelectItem>
+              </SelectContent>
+            </Select>
             {isOtherIndustry && (
               <input
                 className={`${inputCls} mt-2`}
                 value={values.industryCustom}
                 onChange={(e) => update("industryCustom", e.target.value)}
-                placeholder="Apni industry likhein…"
+                placeholder="Type your industry…"
                 autoFocus
               />
             )}
@@ -191,26 +207,26 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
             )}
           </div>
 
-          {/* Service */}
+          {/* Service — custom Radix Select */}
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
               Service Interested In
             </label>
-            <div className="relative">
-              <select
-                className={selectCls}
-                value={values.service}
-                onChange={(e) => update("service", e.target.value)}
-              >
-                <option value="">— Service chunein —</option>
+            <Select
+              value={values.service}
+              onValueChange={(v) => update("service", v)}
+            >
+              <SelectTrigger className={triggerCls}>
+                <SelectValue placeholder="Select a service" />
+              </SelectTrigger>
+              <SelectContent className={contentCls}>
                 {services.map((s) => (
-                  <option key={s.slug} value={s.title}>
+                  <SelectItem key={s.slug} value={s.title} className={itemCls}>
                     {s.title}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            </div>
+              </SelectContent>
+            </Select>
             {errors.service && (
               <p className="mt-1 text-xs text-destructive">{errors.service}</p>
             )}
@@ -242,7 +258,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
               className={`${inputCls} min-h-[100px] resize-none`}
               value={values.message}
               onChange={(e) => update("message", e.target.value)}
-              placeholder="Apne goals ke baare mein batayein…"
+              placeholder="Tell us a bit about your goals…"
             />
           </div>
         </div>
@@ -262,14 +278,13 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
             ref={modalRef}
             className="glass w-full max-w-sm rounded-3xl p-6 shadow-2xl"
           >
-            {/* Header */}
             <div className="mb-5 flex items-start justify-between gap-3">
               <div>
                 <h3 className="font-display text-lg font-bold">
-                  Kisko bhejein?
+                  Who should we contact?
                 </h3>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Apna message kisi ek team member ko bhejein
+                  Choose a team member to send your message to
                 </p>
               </div>
               <button
@@ -280,7 +295,6 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
               </button>
             </div>
 
-            {/* Recipients */}
             <div className="flex flex-col gap-3">
               {recipients.map((r) => (
                 <button
@@ -303,7 +317,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
             </div>
 
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              WhatsApp pe redirect hoga — koi bhi number choose karein
+              You'll be redirected to WhatsApp — choose either contact
             </p>
           </div>
         </div>
