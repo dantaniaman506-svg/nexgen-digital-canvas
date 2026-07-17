@@ -25,6 +25,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label="Toggle theme"
       className="glass fixed top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full transition-transform hover:scale-105"
+      style={{ backgroundColor: "color-mix(in oklab, var(--card) 38%, transparent)" }}
     >
       {dark ? (
         <Sun className="h-5 w-5 text-brand-cyan" />
