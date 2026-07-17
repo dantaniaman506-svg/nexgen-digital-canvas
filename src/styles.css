@@ -47,11 +47,11 @@
 :root {
   --radius: 1.25rem;
 
-  /* Nexgen brand — electric blue mono system */
-  --brand-magenta: oklch(0.62 0.22 255);   /* deep electric blue */
-  --brand-purple: oklch(0.58 0.24 258);    /* electric blue */
-  --brand-blue: oklch(0.66 0.22 250);      /* bright blue */
-  --brand-cyan: oklch(0.82 0.16 220);      /* sky cyan */
+  /* Nexgen brand — strict electric blue mono system (no purple/magenta) */
+  --brand-magenta: oklch(0.48 0.20 255);   /* deep blue */
+  --brand-purple: oklch(0.56 0.22 252);    /* electric blue */
+  --brand-blue: oklch(0.64 0.20 248);      /* bright blue */
+  --brand-cyan: oklch(0.86 0.13 225);      /* pale sky */
 
   --ink: oklch(0.13 0.02 265);
   --cream: oklch(0.985 0.004 250);
@@ -99,23 +99,24 @@
 
 @utility text-brand-gradient {
   background-image: linear-gradient(
-    135deg,
-    var(--brand-magenta) 0%,
-    var(--brand-purple) 35%,
-    var(--brand-blue) 65%,
-    var(--brand-cyan) 100%
+    100deg,
+    var(--brand-purple) 0%,
+    var(--brand-blue) 45%,
+    var(--brand-cyan) 75%,
+    var(--brand-blue) 100%
   );
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: shimmer-sweep 6s ease-in-out infinite;
 }
 
 @utility bg-brand-gradient {
   background-image: linear-gradient(
     135deg,
-    var(--brand-magenta) 0%,
-    var(--brand-purple) 35%,
-    var(--brand-blue) 65%,
+    var(--brand-purple) 0%,
+    var(--brand-blue) 55%,
     var(--brand-cyan) 100%
   );
 }
@@ -191,8 +192,25 @@
   }
   to {
     transform: translateX(0);
-  }
 }
+
+@keyframes shimmer-sweep {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float-y { animation: float-y 5s ease-in-out infinite; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.55; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+.animate-pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
+
 
 .animate-blob {
   animation: blob-drift 18s ease-in-out infinite;
