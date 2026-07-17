@@ -24,7 +24,7 @@ function DarkVideo({ visible }: { visible: boolean }) {
         autoPlay
         preload="auto"
         className="h-full w-full object-cover"
-        src="/videos/jellyfish-dark.mp4"
+        src="/videos/jellyfish.mp4"
       />
       <div
         className="absolute inset-0"
