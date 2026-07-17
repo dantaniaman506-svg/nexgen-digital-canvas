@@ -312,3 +312,102 @@
     animation: none;
   }
 }
+
+/* ─── Global smoothness ──────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent; /* remove grey flash on mobile tap */
+  touch-action: manipulation;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth interactive elements */
+a, button, [role="button"], input, select, textarea {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Touch ripple — blue brand colour ──────────────────────────────── */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--ripple-x, 50%) var(--ripple-y, 50%),
+    oklch(0.64 0.20 248 / 0.28) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transform: scale(0);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.45s ease;
+}
+
+.ripple:active::after {
+  transform: scale(2.8);
+  opacity: 1;
+  transition: transform 0s, opacity 0s;
+}
+
+/* ─── Touch-press scale — cards, buttons, links ─────────────────────── */
+@media (hover: none) {
+  a:active,
+  button:active,
+  [role="button"]:active {
+    transform: scale(0.97);
+    transition: transform 80ms ease;
+  }
+}
+
+/* ─── Blue glow tap ring for interactive elements ────────────────────── */
+@keyframes tap-ring {
+  0%   { box-shadow: 0 0 0 0   oklch(0.64 0.20 248 / 0.55); opacity: 1; }
+  100% { box-shadow: 0 0 0 14px oklch(0.64 0.20 248 / 0);   opacity: 0; }
+}
+
+.tap-ring:active {
+  animation: tap-ring 0.4s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+/* ─── Page transition fade ──────────────────────────────────────────── */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+main {
+  animation: page-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ─── Scrollbar — thin brand-blue ───────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.64 0.20 248 / 0.45);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.64 0.20 248 / 0.75);
+}
+
+/* ─── Image drag prevention ─────────────────────────────────────────── */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
