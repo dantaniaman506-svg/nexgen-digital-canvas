@@ -18,9 +18,13 @@ function DarkVideo({ visible }: { visible: boolean }) {
     >
       <video
         ref={ref}
-        loop muted playsInline autoPlay preload="auto"
+        loop
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
         className="h-full w-full object-cover"
-        src="/videos/hero-dark.mp4"
+        src="/videos/jellyfish-dark.mp4"
       />
       <div
         className="absolute inset-0"
@@ -57,11 +61,13 @@ function LightVideo({ visible }: { visible: boolean }) {
     >
       <video
         ref={ref}
-        loop muted playsInline preload="auto"
+        loop
+        muted
+        playsInline
+        preload="auto"
         className="h-full w-full object-cover"
         src="/videos/hero-light.mp4"
       />
-      {/* Warm cream overlay — keeps text legible */}
       <div
         className="absolute inset-0"
         style={{
@@ -97,7 +103,7 @@ export function VideoBackground() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-      <DarkVideo  visible={isDark}  />
+      <DarkVideo visible={isDark} />
       <LightVideo visible={!isDark} />
     </div>
   );
