@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, Phone, ShieldCheck, ChevronDown } from "lucide-react";
 import { CONTACT, BRAND } from "@/lib/site-data";
@@ -10,75 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-function HeroVideoBackground() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isDark, setIsDark] = useState(() =>
-    document.documentElement.classList.contains("dark"),
-  );
-
-  useEffect(() => {
-    const el = document.documentElement;
-    const update = () => setIsDark(el.classList.contains("dark"));
-    const observer = new MutationObserver(update);
-    observer.observe(el, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (!isDark) {
-      v.play().catch(() => {});
-    } else {
-      v.pause();
-    }
-  }, [isDark]);
-
-  return (
-    <div
-      className="absolute inset-0 transition-opacity duration-700"
-      style={{ opacity: isDark ? 0 : 1 }}
-      aria-hidden="true"
-    >
-      <video
-        ref={videoRef}
-        loop
-        muted
-        playsInline
-        preload="auto"
-        autoPlay
-        className="h-full w-full object-cover"
-        src="/videos/hero-light.mp4"
-      />
-      {/* Warm light overlay — keeps text legible, blends cream palette */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(160deg, oklch(0.99 0.005 80 / 0.72) 0%, oklch(0.97 0.008 230 / 0.55) 55%, oklch(0.99 0.005 80 / 0.68) 100%)",
-        }}
-      />
-      {/* Soft vignette to ground content */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 35%, oklch(0.92 0.01 250 / 0.30) 100%)",
-        }}
-      />
-    </div>
-  );
-}
-
 export function Hero() {
   return (
     <section
       id="hero"
       className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 pt-24 pb-16"
     >
-      {/* Video background — light mode only */}
-      <HeroVideoBackground />
-
       {/* Gradient blobs layer */}
       <div className="absolute inset-0 z-[1]">
         <GradientBlobs />
@@ -118,7 +54,6 @@ export function Hero() {
           className="mt-6 font-display font-extrabold leading-[1.05]"
           style={{
             fontSize: "clamp(2.75rem, 9vw, 5.75rem)",
-            /* Soft halo — not black, spreads warmly */
             textShadow:
               "0 0 80px color-mix(in oklab, var(--brand-blue) 22%, transparent), 0 4px 32px color-mix(in oklab, var(--background) 60%, transparent)",
           }}

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Instagram,
@@ -6,28 +5,13 @@ import {
   Linkedin,
   Youtube,
   Phone,
-  MessageCircle,
   Mail,
   MapPin,
 } from "lucide-react";
 import { BRAND, CONTACT } from "@/lib/site-data";
 
+/** Always dark-styled — no theme branching. */
 export function Footer() {
-  const [isDark, setIsDark] = useState(() =>
-    typeof document !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : true,
-  );
-
-  useEffect(() => {
-    const el = document.documentElement;
-    const update = () => setIsDark(el.classList.contains("dark"));
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(el, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <footer className="relative z-[2] px-5 pt-16 pb-40">
       <div
@@ -42,7 +26,6 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-[1.2fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-3">
-              {/* Logo — explicit pixel dimensions */}
               <span
                 style={{
                   display: "flex",
@@ -53,11 +36,11 @@ export function Footer() {
                   borderRadius: 10,
                   overflow: "hidden",
                   flexShrink: 0,
-                  background: isDark ? "#000" : "#fff",
+                  background: "#000",
                 }}
               >
                 <img
-                  src={isDark ? "/logos/ndm-dark.png" : "/logos/ndm-light.png"}
+                  src="/logos/ndm-dark.png"
                   alt="NDM logo"
                   width={48}
                   height={48}
@@ -78,26 +61,10 @@ export function Footer() {
           <div>
             <h4 className="font-display font-semibold mb-3">Quick Links</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link to="/" className="hover:text-brand-blue transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="hover:text-brand-blue transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="hover:text-brand-blue transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-brand-blue transition-colors">
-                  Contact
-                </Link>
-              </li>
+              <li><Link to="/" className="hover:text-brand-blue transition-colors">Home</Link></li>
+              <li><Link to="/about" className="hover:text-brand-blue transition-colors">About</Link></li>
+              <li><Link to="/services" className="hover:text-brand-blue transition-colors">Services</Link></li>
+              <li><Link to="/contact" className="hover:text-brand-blue transition-colors">Contact</Link></li>
             </ul>
           </div>
 
@@ -124,10 +91,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-brand-blue" />
-                <a
-                  href={`mailto:${CONTACT.email}`}
-                  className="hover:text-brand-blue transition-colors"
-                >
+                <a href={`mailto:${CONTACT.email}`} className="hover:text-brand-blue transition-colors">
                   {CONTACT.email}
                 </a>
               </li>

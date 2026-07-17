@@ -10,12 +10,11 @@ import { useEffect } from "react";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SmoothScroll } from "../components/site/SmoothScroll";
 import { FloatingLogo } from "../components/site/FloatingLogo";
-import { ThemeToggle } from "../components/site/ThemeToggle";
 import { ScrollProgress } from "../components/site/ScrollProgress";
 import { WhatsAppFloat } from "../components/site/WhatsAppFloat";
 import { BottomNav } from "../components/site/BottomNav";
 import { Footer } from "../components/site/Footer";
-import { DarkModeVideoBackground } from "../components/site/DarkModeVideoBackground";
+import { VideoBackground } from "../components/site/VideoBackground";
 
 function NotFoundComponent() {
   return (
@@ -88,14 +87,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Dark-mode full-page video — fixed behind everything */}
-      <DarkModeVideoBackground />
+      {/* Jellyfish video — always on, fixed behind everything */}
+      <VideoBackground />
 
       {/* Page content — sits above the video */}
-      <div className="relative z-[1] min-h-screen bg-background dark:bg-transparent text-foreground">
+      <div className="relative z-[1] min-h-screen bg-transparent text-foreground">
         <SmoothScroll />
         <FloatingLogo />
-        <ThemeToggle />
         <ScrollProgress />
         <WhatsAppFloat />
         <main>

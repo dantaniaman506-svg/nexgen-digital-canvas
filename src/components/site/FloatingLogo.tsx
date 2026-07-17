@@ -1,26 +1,10 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { BRAND } from "@/lib/site-data";
 
+/** Always dark-styled — no theme branching. */
 export function FloatingLogo() {
-  const [isDark, setIsDark] = useState(() =>
-    typeof document !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : true,
-  );
-
-  useEffect(() => {
-    const el = document.documentElement;
-    const update = () => setIsDark(el.classList.contains("dark"));
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(el, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    /* Use inline style for position — guarantees fixed layout regardless of CSS build */
     <div
       style={{
         position: "fixed",
@@ -44,18 +28,13 @@ export function FloatingLogo() {
             borderRadius: 16,
             padding: "6px 14px 6px 6px",
             backdropFilter: "blur(20px) saturate(160%)",
-            backgroundColor: isDark ? "rgba(0,0,0,0.50)" : "rgba(255,255,255,0.60)",
-            border: isDark
-              ? "1px solid rgba(255,255,255,0.12)"
-              : "1px solid rgba(0,0,0,0.08)",
-            boxShadow: isDark
-              ? "0 4px 28px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.08)"
-              : "0 4px 28px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.70)",
+            backgroundColor: "rgba(0,0,0,0.50)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            boxShadow: "0 4px 28px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.08)",
             textDecoration: "none",
             transition: "transform 0.2s",
           }}
         >
-          {/* Logo mark — explicit pixel dimensions, no Tailwind sizing on img */}
           <span
             style={{
               display: "flex",
@@ -66,11 +45,11 @@ export function FloatingLogo() {
               borderRadius: 10,
               overflow: "hidden",
               flexShrink: 0,
-              background: isDark ? "#000" : "#fff",
+              background: "#000",
             }}
           >
             <img
-              src={isDark ? "/logos/ndm-dark.png" : "/logos/ndm-light.png"}
+              src="/logos/ndm-dark.png"
               alt="NDM logo"
               width={44}
               height={44}
@@ -98,7 +77,7 @@ export function FloatingLogo() {
                 fontWeight: 600,
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: isDark ? "rgba(255,255,255,0.42)" : "rgba(0,0,0,0.38)",
+                color: "rgba(255,255,255,0.42)",
               }}
             >
               Digital Marketing
