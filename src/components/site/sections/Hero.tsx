@@ -84,8 +84,8 @@ export function Hero() {
                     <Phone className="h-4 w-4" />
                   </span>
                   <span className="flex flex-col text-left">
-                    <span className="font-display text-sm font-semibold">{CONTACT.phone1}</span>
-                    <span className="text-[11px] text-muted-foreground">Primary line</span>
+                    <span className="font-display text-sm font-semibold">{CONTACT.phone1Name}</span>
+                    <span className="text-[11px] text-muted-foreground">{CONTACT.phone1}</span>
                   </span>
                 </a>
               </DropdownMenuItem>
@@ -98,8 +98,8 @@ export function Hero() {
                     <Phone className="h-4 w-4" />
                   </span>
                   <span className="flex flex-col text-left">
-                    <span className="font-display text-sm font-semibold">{CONTACT.phone2}</span>
-                    <span className="text-[11px] text-muted-foreground">Alternate line</span>
+                    <span className="font-display text-sm font-semibold">{CONTACT.phone2Name}</span>
+                    <span className="text-[11px] text-muted-foreground">{CONTACT.phone2}</span>
                   </span>
                 </a>
               </DropdownMenuItem>

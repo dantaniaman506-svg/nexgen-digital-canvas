@@ -36,8 +36,10 @@ export const BRAND = {
 export const CONTACT = {
   phone1: "+91 96649 46844",
   phone1Tel: "+919664946844",
+  phone1Name: "Vedant Prajapati",
   phone2: "+91 97149 34644",
   phone2Tel: "+919714934644",
+  phone2Name: "Prem Jain",
   whatsappNumber: "919664946844",
   email: "hello@nexgendigital.in",
   address:

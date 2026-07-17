@@ -108,16 +108,18 @@ export function Footer() {
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-brand-blue" />
                 <span>{CONTACT.city}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-brand-blue" />
-                <a href={`tel:${CONTACT.phone1Tel}`} className="hover:text-brand-blue transition-colors">
-                  {CONTACT.phone1}
+              <li className="flex items-start gap-2">
+                <Phone className="h-4 w-4 mt-0.5 shrink-0 text-brand-blue" />
+                <a href={`tel:${CONTACT.phone1Tel}`} className="hover:text-brand-blue transition-colors flex flex-col">
+                  <span className="font-medium text-foreground">{CONTACT.phone1Name}</span>
+                  <span className="text-xs">{CONTACT.phone1}</span>
                 </a>
               </li>
-              <li className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4 text-brand-blue" />
-                <a href={`tel:${CONTACT.phone2Tel}`} className="hover:text-brand-blue transition-colors">
-                  {CONTACT.phone2}
+              <li className="flex items-start gap-2">
+                <Phone className="h-4 w-4 mt-0.5 shrink-0 text-brand-blue" />
+                <a href={`tel:${CONTACT.phone2Tel}`} className="hover:text-brand-blue transition-colors flex flex-col">
+                  <span className="font-medium text-foreground">{CONTACT.phone2Name}</span>
+                  <span className="text-xs">{CONTACT.phone2}</span>
                 </a>
               </li>
               <li className="flex items-center gap-2">
