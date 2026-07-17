@@ -47,11 +47,11 @@
 :root {
   --radius: 1.25rem;
 
-  /* Nexgen brand — electric blue mono system */
-  --brand-magenta: oklch(0.62 0.22 255);   /* deep electric blue */
-  --brand-purple: oklch(0.58 0.24 258);    /* electric blue */
-  --brand-blue: oklch(0.66 0.22 250);      /* bright blue */
-  --brand-cyan: oklch(0.82 0.16 220);      /* sky cyan */
+  /* Nexgen brand — strict electric blue mono system (no purple/magenta) */
+  --brand-magenta: oklch(0.48 0.20 255);   /* deep blue */
+  --brand-purple: oklch(0.56 0.22 252);    /* electric blue */
+  --brand-blue: oklch(0.64 0.20 248);      /* bright blue */
+  --brand-cyan: oklch(0.86 0.13 225);      /* pale sky */
 
   --ink: oklch(0.13 0.02 265);
   --cream: oklch(0.985 0.004 250);
