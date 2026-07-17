@@ -47,7 +47,7 @@
 :root {
   --radius: 1.25rem;
 
-  /* Nexgen brand — strict electric blue mono system (no purple/magenta) */
+  /* Nexgen brand — electric blue palette */
   --brand-magenta: oklch(0.48 0.20 255);   /* deep blue */
   --brand-purple: oklch(0.56 0.22 252);    /* electric blue */
   --brand-blue: oklch(0.64 0.20 248);      /* bright blue */
@@ -78,25 +78,26 @@
 }
 
 .dark {
-  --background: oklch(0.14 0.03 265);
+  --background: oklch(0.13 0.03 265);
   --foreground: var(--cream);
-  --card: oklch(0.19 0.035 265);
+  --card: oklch(0.18 0.035 265);
   --card-foreground: var(--cream);
-  --popover: oklch(0.19 0.035 265);
+  --popover: oklch(0.18 0.035 265);
   --popover-foreground: var(--cream);
   --primary: var(--brand-cyan);
   --primary-foreground: var(--ink);
-  --secondary: oklch(0.23 0.04 265);
+  --secondary: oklch(0.22 0.04 265);
   --secondary-foreground: var(--cream);
-  --muted: oklch(0.23 0.04 265);
+  --muted: oklch(0.22 0.04 265);
   --muted-foreground: oklch(0.72 0.03 260);
   --accent: var(--brand-cyan);
   --accent-foreground: var(--ink);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 13%);
   --ring: var(--brand-cyan);
 }
 
+/* ─── Brand gradient text ─────────────────────────────────────────────── */
 @utility text-brand-gradient {
   background-image: linear-gradient(
     100deg,
@@ -112,6 +113,7 @@
   animation: shimmer-sweep 6s ease-in-out infinite;
 }
 
+/* ─── Brand gradient background ──────────────────────────────────────── */
 @utility bg-brand-gradient {
   background-image: linear-gradient(
     135deg,
@@ -121,26 +123,48 @@
   );
 }
 
+/* ─── Glass morphism ──────────────────────────────────────────────────── */
 @utility glass {
   background-color: color-mix(in oklab, var(--card) 42%, transparent);
-  backdrop-filter: blur(22px) saturate(160%);
-  
-  border: 1px solid color-mix(in oklab, var(--brand-blue) 24%, transparent);
+  backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid color-mix(in oklab, var(--brand-blue) 22%, transparent);
+  box-shadow: 0 2px 20px oklch(0 0 0 / 0.06), inset 0 1px 0 oklch(1 0 0 / 0.20);
 }
 
 @utility glass-strong {
-  background-color: color-mix(in oklab, var(--card) 58%, transparent);
-  backdrop-filter: blur(28px) saturate(170%);
-  
-  border: 1px solid color-mix(in oklab, var(--brand-blue) 32%, transparent);
+  background-color: color-mix(in oklab, var(--card) 60%, transparent);
+  backdrop-filter: blur(32px) saturate(175%);
+  border: 1px solid color-mix(in oklab, var(--brand-blue) 30%, transparent);
+  box-shadow: 0 4px 32px oklch(0 0 0 / 0.10), inset 0 1px 0 oklch(1 0 0 / 0.25);
 }
 
+/* ─── Brand glow button shadow ────────────────────────────────────────── */
 @utility brand-glow-shadow {
   box-shadow:
-    0 10px 40px -10px color-mix(in oklab, var(--brand-blue) 55%, transparent),
-    0 0 0 1px color-mix(in oklab, var(--brand-cyan) 45%, transparent);
+    0 10px 40px -10px color-mix(in oklab, var(--brand-blue) 60%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--brand-cyan) 40%, transparent),
+    inset 0 1px 0 oklch(1 0 0 / 0.20);
 }
 
+/* ─── Dark mode: sections become translucent so video peeks through ───── */
+.dark main > section {
+  position: relative;
+}
+.dark main > section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, oklch(0.12 0.03 265) 62%, transparent);
+  backdrop-filter: blur(3px);
+  z-index: 0;
+  pointer-events: none;
+}
+.dark main > section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Base layer ──────────────────────────────────────────────────────── */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -155,25 +179,23 @@
     font-family: var(--font-sans);
     overflow-x: hidden;
   }
-  h1,
-  h2,
-  h3,
-  h4 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
 }
 
+/* ─── Keyframes ───────────────────────────────────────────────────────── */
 @keyframes blob-drift {
   0%,
   100% {
     transform: translate(0, 0) scale(1);
   }
   33% {
-    transform: translate(40px, -30px) scale(1.1);
+    transform: translate(28px, -22px) scale(1.06);
   }
   66% {
-    transform: translate(-30px, 40px) scale(0.95);
+    transform: translate(-18px, 18px) scale(0.95);
   }
 }
 
@@ -192,26 +214,65 @@
   }
   to {
     transform: translateX(0);
+  }
 }
 
 @keyframes shimmer-sweep {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
-.animate-float-y { animation: float-y 5s ease-in-out infinite; }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.9); opacity: 0.55; }
-  100% { transform: scale(1.7); opacity: 0; }
+  0% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }
-.animate-pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
 
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px -5px color-mix(in oklab, var(--brand-blue) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 38px -3px color-mix(in oklab, var(--brand-blue) 70%, transparent);
+  }
+}
+
+/* ─── Animation utilities ─────────────────────────────────────────────── */
+.animate-float-y {
+  animation: float-y 5s ease-in-out infinite;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2.4s ease-out infinite;
+}
 .animate-blob {
   animation: blob-drift 18s ease-in-out infinite;
 }
@@ -221,15 +282,25 @@
 .animate-marquee-right {
   animation: marquee-right 40s linear infinite;
 }
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
 .marquee-pause:hover .animate-marquee-left,
 .marquee-pause:hover .animate-marquee-right {
   animation-play-state: paused;
 }
 
+/* ─── Reduced motion ──────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-blob,
   .animate-marquee-left,
-  .animate-marquee-right {
+  .animate-marquee-right,
+  .animate-float-y,
+  .animate-spin-slow,
+  .animate-glow-pulse {
     animation: none;
   }
 }

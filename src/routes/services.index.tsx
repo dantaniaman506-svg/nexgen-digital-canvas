@@ -5,24 +5,6 @@ import { GradientBlobs } from "@/components/site/GradientBlobs";
 import { services } from "@/lib/site-data";
 
 export const Route = createFileRoute("/services/")({
-  head: () => ({
-    meta: [
-      { title: "Services — Digital Marketing Excellence for Your Brand | Nexgen" },
-      {
-        name: "description",
-        content:
-          "Everything you need under one roof — social media, SEO, Google & Meta ads, website & app development, branding, video and more.",
-      },
-      { property: "og:title", content: "Services — Nexgen Digital Marketing" },
-      {
-        property: "og:description",
-        content:
-          "Twelve specialist services that plug into one growth engine — designed to move metrics, not just tick boxes.",
-      },
-      { property: "og:url", content: "/services" },
-    ],
-    links: [{ rel: "canonical", href: "/services" }],
-  }),
   component: ServicesIndex,
 });
 

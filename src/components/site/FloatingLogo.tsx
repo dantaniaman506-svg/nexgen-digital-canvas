@@ -13,30 +13,39 @@ export function FloatingLogo() {
       <Link
         to="/"
         aria-label={`${BRAND.fullName} home`}
-        className="glass group flex items-center gap-2.5 rounded-full py-1.5 pr-4 pl-1.5 shadow-lg transition-transform hover:scale-[1.02]"
-        style={{ backgroundColor: "color-mix(in oklab, var(--card) 35%, transparent)" }}
+        className="group flex items-center gap-2.5 rounded-full py-1.5 pr-4 pl-1.5 shadow-lg transition-all hover:scale-[1.02]"
+        style={{
+          backdropFilter: "blur(18px)",
+          backgroundColor: "color-mix(in oklab, var(--card) 30%, transparent)",
+          border: "1px solid color-mix(in oklab, var(--border) 60%, transparent)",
+          boxShadow:
+            "0 4px 24px oklch(0 0 0 / 0.12), inset 0 1px 0 oklch(1 0 0 / 0.22)",
+        }}
       >
+        {/* "N" letter mark */}
         <span
-          className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full"
+          className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full select-none"
           style={{
             background:
-              "radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand-cyan) 40%, transparent), var(--ink))",
+              "linear-gradient(135deg, var(--brand-purple) 0%, var(--brand-blue) 55%, var(--brand-cyan) 100%)",
             boxShadow:
-              "0 0 0 1px color-mix(in oklab, var(--brand-cyan) 55%, transparent), 0 0 18px -4px color-mix(in oklab, var(--brand-blue) 60%, transparent)",
+              "0 0 0 1px color-mix(in oklab, var(--brand-cyan) 40%, transparent), 0 0 20px -4px color-mix(in oklab, var(--brand-blue) 65%, transparent)",
           }}
         >
-          <img
-            src={BRAND.logoUrl}
-            alt=""
-            className="h-8 w-8 object-contain"
-          />
+          <span
+            className="font-display text-[22px] font-extrabold leading-none text-white"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            N
+          </span>
         </span>
+
         <span className="flex flex-col leading-none">
           <span className="font-display text-[15px] font-extrabold tracking-tight text-brand-gradient">
             {BRAND.name}
           </span>
           <span className="mt-0.5 text-[9px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-            Digital Marketing Agency
+            Digital Marketing
           </span>
         </span>
       </Link>

@@ -6,23 +6,6 @@ import { ContactForm } from "@/components/site/ContactForm";
 import { CONTACT } from "@/lib/site-data";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact Nexgen — Get a Free Growth Plan" },
-      {
-        name: "description",
-        content:
-          "Talk to Nexgen Digital Marketing Solutions in Ahmedabad. Call, WhatsApp or fill the form — we'll reply with a free growth plan.",
-      },
-      { property: "og:title", content: "Contact Nexgen — Get a Free Growth Plan" },
-      {
-        property: "og:description",
-        content: "Ahmedabad-based digital marketing agency. Free growth plan on WhatsApp.",
-      },
-      { property: "og:url", content: "/contact" },
-    ],
-    links: [{ rel: "canonical", href: "/contact" }],
-  }),
   component: ContactPage,
 });
 

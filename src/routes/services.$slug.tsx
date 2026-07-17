@@ -10,28 +10,6 @@ export const Route = createFileRoute("/services/$slug")({
     if (!service) throw notFound();
     return { service };
   },
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return {
-        meta: [
-          { title: "Service not found — Nexgen" },
-          { name: "robots", content: "noindex" },
-        ],
-      };
-    }
-    const s = loaderData.service;
-    return {
-      meta: [
-        { title: `${s.title} — Nexgen Digital Marketing` },
-        { name: "description", content: s.intro },
-        { property: "og:title", content: `${s.title} — Nexgen` },
-        { property: "og:description", content: s.intro },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: `/services/${s.slug}` },
-      ],
-      links: [{ rel: "canonical", href: `/services/${s.slug}` }],
-    };
-  },
   notFoundComponent: () => (
     <section className="min-h-screen flex items-center justify-center px-5">
       <div className="glass rounded-3xl p-10 text-center max-w-md">

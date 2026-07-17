@@ -10,23 +10,6 @@ import { FAQ } from "@/components/site/sections/FAQ";
 import { Contact } from "@/components/site/sections/Contact";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Nexgen — Digital Marketing & Growth Agency in Ahmedabad" },
-      {
-        name: "description",
-        content:
-          "Creative digital marketing agency in Ahmedabad. Social media, SEO, Google & Meta ads, websites and branding — all in one growth engine.",
-      },
-      { property: "og:title", content: "Nexgen — Digital Marketing & Growth Agency" },
-      {
-        property: "og:description",
-        content:
-          "We turn ideas into impact. Social media, SEO, ads, websites & apps — engineered to grow your brand.",
-      },
-      { property: "og:url", content: "/" },
-    ],
-  }),
   component: HomePage,
 });
 

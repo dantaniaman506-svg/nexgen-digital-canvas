@@ -5,24 +5,6 @@ import { GradientBlobs } from "@/components/site/GradientBlobs";
 import { BRAND } from "@/lib/site-data";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About Nexgen — Helping Businesses Grow Online" },
-      {
-        name: "description",
-        content:
-          "Nexgen is a full-stack growth partner in Ahmedabad — digital marketing, web and app development under one roof. Learn about our mission, vision and why brands choose us.",
-      },
-      { property: "og:title", content: "About Nexgen — Helping Businesses Grow Online" },
-      {
-        property: "og:description",
-        content:
-          "5+ years, 400+ projects, 50+ brands. Passionate technologists building growth for startups to enterprises.",
-      },
-      { property: "og:url", content: "/about" },
-    ],
-    links: [{ rel: "canonical", href: "/about" }],
-  }),
   component: AboutPage,
 });
 
