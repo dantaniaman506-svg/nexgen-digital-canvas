@@ -7,14 +7,13 @@ const items = [
   { to: "/", label: "Home", icon: House, sectionId: "hero" },
   { to: "/about", label: "About", icon: Info, sectionId: "about" },
   { to: "/services", label: "Services", icon: Layers, sectionId: "services" },
-  { to: "/#why", label: "Why", icon: Award, sectionId: "why" },
+  { to: "/#why", label: "Why Us", icon: Award, sectionId: "why" },
   { to: "/#industries", label: "Industries", icon: Briefcase, sectionId: "industries" },
   { to: "/contact", label: "Contact", icon: Send, sectionId: "contact" },
 ];
 
-/* Each button: 44px wide, 2px gap → 46px per step */
 const ITEM_SIZE = 44;
-const ITEM_GAP = 2;
+const ITEM_GAP = 4;
 const STEP = ITEM_SIZE + ITEM_GAP;
 
 function getDefaultSection(pathname: string) {
@@ -31,18 +30,33 @@ export function BottomNav() {
     getDefaultSection(pathname),
   );
   const [visible, setVisible] = useState(false);
+  const [isDark, setIsDark] = useState(
+    () => document.documentElement.classList.contains("dark"),
+  );
   const scrollSpyPaused = useRef(false);
 
+  /* Delayed mount so it slides up after page load */
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 400);
+    const t = setTimeout(() => setVisible(true), 500);
     return () => clearTimeout(t);
   }, []);
 
+  /* Theme sync */
+  useEffect(() => {
+    const el = document.documentElement;
+    const obs = new MutationObserver(() =>
+      setIsDark(el.classList.contains("dark")),
+    );
+    obs.observe(el, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
+  /* Reset active section on route change */
   useEffect(() => {
     setActiveSection(getDefaultSection(pathname));
   }, [pathname]);
 
-  /* Scroll-spy on home page only */
+  /* Scroll-spy — home page only */
   useEffect(() => {
     if (pathname !== "/") return;
     const elements = items
@@ -58,18 +72,26 @@ export function BottomNav() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (vis[0]) setActiveSection(vis[0].target.id);
       },
-      { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.1, 0.5, 1] },
+      { rootMargin: "-35% 0px -35% 0px", threshold: [0, 0.1, 0.5, 1] },
     );
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [pathname]);
 
-  const handleClick = useCallback((sectionId: string) => {
+  const handleClick = useCallback((sectionId: string, to: string) => {
     setActiveSection(sectionId);
     scrollSpyPaused.current = true;
+
+    /* For hash-only links on home, manually scroll to section */
+    if (to.startsWith("/#")) {
+      const id = to.slice(2);
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+
     setTimeout(() => {
       scrollSpyPaused.current = false;
-    }, 900);
+    }, 1000);
   }, []);
 
   const activeIndex = items.findIndex((i) => i.sectionId === activeSection);
@@ -78,7 +100,7 @@ export function BottomNav() {
     <div
       style={{
         position: "fixed",
-        bottom: 20,
+        bottom: 24,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 50,
@@ -88,10 +110,11 @@ export function BottomNav() {
       <AnimatePresence>
         {visible && (
           <motion.nav
-            initial={{ y: 60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 60, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 28 }}
+            initial={{ y: 80, opacity: 0, scale: 0.92 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 80, opacity: 0, scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.9 }}
+            aria-label="Main navigation"
             style={{
               position: "relative",
               display: "flex",
@@ -99,38 +122,50 @@ export function BottomNav() {
               gap: ITEM_GAP,
               borderRadius: 9999,
               padding: "6px 8px",
-              backdropFilter: "blur(24px) saturate(180%)",
-              backgroundColor:
-                "color-mix(in oklab, var(--card) 42%, transparent)",
-              border:
-                "1px solid color-mix(in oklab, var(--border) 60%, transparent)",
-              boxShadow:
-                "0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
+              backdropFilter: "blur(32px) saturate(200%)",
+              WebkitBackdropFilter: "blur(32px) saturate(200%)",
+              backgroundColor: isDark
+                ? "rgba(10,15,40,0.70)"
+                : "rgba(255,255,255,0.68)",
+              border: isDark
+                ? "1px solid rgba(255,255,255,0.10)"
+                : "1px solid rgba(255,255,255,0.92)",
+              boxShadow: isDark
+                ? "0 8px 40px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.08)"
+                : "0 8px 40px rgba(80,120,255,0.12), 0 2px 0 rgba(255,255,255,0.90) inset",
               pointerEvents: "auto",
               whiteSpace: "nowrap",
+              transition: "background-color 0.35s, border-color 0.35s, box-shadow 0.35s",
             }}
           >
-            {/* Single pill that slides to the active item — no layoutId needed */}
+            {/* Sliding active indicator */}
             {activeIndex >= 0 && (
               <motion.span
                 animate={{ x: activeIndex * STEP }}
-                transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.8 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 480,
+                  damping: 36,
+                  mass: 0.7,
+                }}
                 style={{
                   position: "absolute",
-                  left: 8,           /* matches nav horizontal padding */
-                  top: 6,            /* matches nav vertical padding */
+                  left: 8,
+                  top: 6,
                   width: ITEM_SIZE,
                   height: ITEM_SIZE,
                   borderRadius: "50%",
-                  background: "linear-gradient(135deg, #4F7FFF 0%, #3EC6E0 100%)",
-                  boxShadow: "0 4px 18px -4px rgba(79,127,255,0.70)",
+                  background:
+                    "linear-gradient(135deg, #6C5CE7 0%, #4F7FFF 45%, #00B4D8 100%)",
+                  boxShadow:
+                    "0 4px 20px -4px rgba(79,127,255,0.65), 0 0 0 1px rgba(255,255,255,0.15) inset",
                   zIndex: 0,
                   pointerEvents: "none",
                 }}
               />
             )}
 
-            {items.map((item, idx) => {
+            {items.map((item) => {
               const Icon = item.icon;
               const isActive =
                 pathname === "/"
@@ -144,7 +179,7 @@ export function BottomNav() {
                   key={item.label}
                   to={item.to}
                   aria-label={item.label}
-                  onClick={() => handleClick(item.sectionId)}
+                  onClick={() => handleClick(item.sectionId, item.to)}
                   style={{
                     position: "relative",
                     display: "flex",
@@ -154,12 +189,17 @@ export function BottomNav() {
                     height: ITEM_SIZE,
                     borderRadius: "50%",
                     flexShrink: 0,
-                    color: isActive ? "#fff" : "var(--color-brand-blue)",
-                    transition: "color 0.2s",
                     zIndex: 1,
+                    transition: "color 0.25s, transform 0.2s",
+                    color: isActive
+                      ? "#fff"
+                      : isDark
+                        ? "rgba(140,160,255,0.70)"
+                        : "rgba(60,80,180,0.55)",
+                    transform: isActive ? "scale(1.08)" : "scale(1)",
                   }}
                 >
-                  <Icon size={20} strokeWidth={2.2} />
+                  <Icon size={20} strokeWidth={isActive ? 2.4 : 2} />
                 </Link>
               );
             })}
