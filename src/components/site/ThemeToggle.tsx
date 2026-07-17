@@ -4,13 +4,20 @@ import { Moon, Sun } from "lucide-react";
 const STORAGE_KEY = "nexgen-theme";
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
+  // Default is dark — read from DOM (index.html already applied it)
+  const [dark, setDark] = useState(() =>
+    typeof document !== "undefined"
+      ? document.documentElement.classList.contains("dark")
+      : true,
+  );
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    const isDark = saved === "dark";
+    // Default to dark if no preference saved
+    const isDark = saved !== "light";
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
+    if (!saved) localStorage.setItem(STORAGE_KEY, "dark");
   }, []);
 
   const toggle = () => {
@@ -24,8 +31,15 @@ export function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle theme"
-      className="glass fixed top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full transition-transform hover:scale-105"
-      style={{ backgroundColor: "color-mix(in oklab, var(--card) 38%, transparent)" }}
+      className="fixed top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full transition-all hover:scale-105"
+      style={{
+        backdropFilter: "blur(20px) saturate(160%)",
+        backgroundColor: dark ? "rgba(0,0,0,0.40)" : "rgba(255,255,255,0.55)",
+        border: dark ? "1px solid rgba(255,255,255,0.10)" : "1px solid rgba(0,0,0,0.08)",
+        boxShadow: dark
+          ? "0 4px 20px rgba(0,0,0,0.40)"
+          : "0 4px 20px rgba(0,0,0,0.10)",
+      }}
     >
       {dark ? (
         <Sun className="h-5 w-5 text-brand-cyan" />

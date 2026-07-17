@@ -146,7 +146,7 @@
     inset 0 1px 0 oklch(1 0 0 / 0.20);
 }
 
-/* ─── Dark mode: sections become translucent so video peeks through ───── */
+/* ─── Dark mode: sections are translucent — video clearly visible ──────── */
 .dark main > section {
   position: relative;
 }
@@ -154,14 +154,22 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: color-mix(in oklab, oklch(0.12 0.03 265) 62%, transparent);
-  backdrop-filter: blur(3px);
+  /* Only ~30% tint — video stays vivid underneath */
+  background: oklch(0.10 0.03 265 / 0.30);
+  backdrop-filter: blur(2px);
   z-index: 0;
   pointer-events: none;
 }
 .dark main > section > * {
   position: relative;
   z-index: 1;
+}
+
+/* ─── Dark mode: cards/glass elements get subtle text-glow backdrops ─────── */
+.dark .glass,
+.dark .glass-strong {
+  /* slightly more transparent in dark so video shows through glass */
+  background-color: color-mix(in oklab, var(--card) 28%, transparent) !important;
 }
 
 /* ─── Base layer ──────────────────────────────────────────────────────── */

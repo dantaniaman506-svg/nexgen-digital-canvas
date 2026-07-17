@@ -26,10 +26,15 @@
       rel="stylesheet"
     />
     <script>
-      // Apply saved theme before first paint to avoid flash
+      // Default theme is DARK — apply before first paint to avoid flash
       (function () {
         var t = localStorage.getItem("nexgen-theme");
-        if (t === "dark") document.documentElement.classList.add("dark");
+        if (t === "light") {
+          // user explicitly chose light
+        } else {
+          document.documentElement.classList.add("dark");
+          if (!t) localStorage.setItem("nexgen-theme", "dark");
+        }
       })();
     </script>
   </head>

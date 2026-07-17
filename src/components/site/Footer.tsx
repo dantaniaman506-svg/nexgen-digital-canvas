@@ -4,35 +4,38 @@ import { BRAND, CONTACT } from "@/lib/site-data";
 
 export function Footer() {
   return (
-    <footer className="px-5 pt-16 pb-40">
+    <footer className="relative z-[2] px-5 pt-16 pb-40">
       <div
         className="mx-auto max-w-6xl rounded-3xl p-8"
         style={{
-          backdropFilter: "blur(24px) saturate(160%)",
-          backgroundColor: "color-mix(in oklab, var(--card) 45%, transparent)",
-          border: "1px solid color-mix(in oklab, var(--brand-blue) 20%, transparent)",
-          boxShadow: "0 8px 48px oklch(0 0 0 / 0.08), inset 0 1px 0 oklch(1 0 0 / 0.18)",
+          backdropFilter: "blur(28px) saturate(160%)",
+          backgroundColor: "color-mix(in oklab, var(--card) 22%, transparent)",
+          border: "1px solid color-mix(in oklab, var(--border) 50%, transparent)",
+          boxShadow: "0 8px 48px oklch(0 0 0 / 0.12), inset 0 1px 0 oklch(1 0 0 / 0.12)",
         }}
       >
         <div className="grid gap-8 md:grid-cols-[1.2fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-3">
-              {/* "N" letter mark — same style as header */}
+              {/* NDM logo — matches theme */}
               <span
-                className="flex h-11 w-11 items-center justify-center rounded-full select-none shrink-0"
-                style={{
-                  background:
-                    "linear-gradient(135deg, var(--brand-purple) 0%, var(--brand-blue) 55%, var(--brand-cyan) 100%)",
-                  boxShadow:
-                    "0 0 0 1px color-mix(in oklab, var(--brand-cyan) 40%, transparent), 0 0 16px -3px color-mix(in oklab, var(--brand-blue) 55%, transparent)",
-                }}
+                className="flex items-center justify-center overflow-hidden rounded-xl shrink-0"
+                style={{ width: 52, height: 52 }}
               >
-                <span
-                  className="font-display text-[22px] font-extrabold leading-none text-white"
-                  style={{ letterSpacing: "-0.03em" }}
-                >
-                  N
-                </span>
+                <img
+                  src="/logos/ndm-dark.png"
+                  alt="NDM logo"
+                  className="dark:block hidden w-full h-full object-contain"
+                  draggable={false}
+                  style={{ background: "#000", borderRadius: 12 }}
+                />
+                <img
+                  src="/logos/ndm-light.png"
+                  alt="NDM logo"
+                  className="dark:hidden block w-full h-full object-contain"
+                  draggable={false}
+                  style={{ background: "#fff", borderRadius: 12 }}
+                />
               </span>
               <span className="font-display text-xl font-bold text-brand-gradient">{BRAND.name}</span>
             </div>
@@ -81,7 +84,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border/60 text-center text-xs text-muted-foreground">
+        <div className="mt-8 pt-6 border-t border-border/40 text-center text-xs text-muted-foreground">
           © {new Date().getFullYear()} {BRAND.fullName}. All rights reserved.
         </div>
       </div>
