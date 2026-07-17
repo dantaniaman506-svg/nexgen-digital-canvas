@@ -13,13 +13,22 @@ export function WhatsAppFloat() {
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.95 }}
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-24 right-5 z-50"
-      style={{ filter: "drop-shadow(0 4px 18px rgba(37,211,102,0.55))" }}
+      style={{
+        position: "fixed",
+        bottom: 96,
+        right: 20,
+        zIndex: 50,
+        filter: "drop-shadow(0 4px 20px rgba(37,211,102,0.60))",
+        display: "block",
+        lineHeight: 0,
+      }}
     >
       <img
         src="/logos/whatsapp-icon.png"
         alt="WhatsApp"
-        className="h-14 w-14 rounded-full"
+        width={56}
+        height={56}
+        style={{ width: 56, height: 56, borderRadius: "50%", display: "block" }}
         draggable={false}
       />
     </motion.a>

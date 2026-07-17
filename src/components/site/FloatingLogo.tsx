@@ -20,58 +20,92 @@ export function FloatingLogo() {
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.5 }}
-      className="fixed top-3 left-3 z-50 sm:top-4 sm:left-4"
+    /* Use inline style for position — guarantees fixed layout regardless of CSS build */
+    <div
+      style={{
+        position: "fixed",
+        top: 12,
+        left: 12,
+        zIndex: 50,
+      }}
     >
-      <Link
-        to="/"
-        aria-label={`${BRAND.fullName} home`}
-        className="group flex items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:scale-[1.02]"
-        style={{
-          backdropFilter: "blur(20px) saturate(160%)",
-          backgroundColor: isDark
-            ? "rgba(0,0,0,0.45)"
-            : "rgba(255,255,255,0.55)",
-          border: isDark
-            ? "1px solid rgba(255,255,255,0.10)"
-            : "1px solid rgba(0,0,0,0.08)",
-          boxShadow: isDark
-            ? "0 4px 28px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)"
-            : "0 4px 28px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.70)",
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
       >
-        {/* Logo image — dark vs light variant */}
-        <span
-          className="flex items-center justify-center overflow-hidden rounded-xl shrink-0"
+        <Link
+          to="/"
+          aria-label={`${BRAND.fullName} home`}
           style={{
-            width: 48,
-            height: 48,
-            background: isDark ? "#000" : "#fff",
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            borderRadius: 16,
+            padding: "6px 14px 6px 6px",
+            backdropFilter: "blur(20px) saturate(160%)",
+            backgroundColor: isDark ? "rgba(0,0,0,0.50)" : "rgba(255,255,255,0.60)",
+            border: isDark
+              ? "1px solid rgba(255,255,255,0.12)"
+              : "1px solid rgba(0,0,0,0.08)",
+            boxShadow: isDark
+              ? "0 4px 28px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.08)"
+              : "0 4px 28px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.70)",
+            textDecoration: "none",
+            transition: "transform 0.2s",
           }}
         >
-          <img
-            src={isDark ? "/logos/ndm-dark.png" : "/logos/ndm-light.png"}
-            alt="NDM logo"
-            className="w-full h-full object-contain"
-            draggable={false}
-          />
-        </span>
-
-        <span className="flex flex-col leading-none">
-          <span className="font-display text-[15px] font-extrabold tracking-tight text-brand-gradient">
-            {BRAND.name}
-          </span>
+          {/* Logo mark — explicit pixel dimensions, no Tailwind sizing on img */}
           <span
-            className="mt-0.5 text-[9px] font-semibold tracking-[0.14em] uppercase"
-            style={{ color: isDark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.40)" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 44,
+              height: 44,
+              borderRadius: 10,
+              overflow: "hidden",
+              flexShrink: 0,
+              background: isDark ? "#000" : "#fff",
+            }}
           >
-            Digital Marketing
+            <img
+              src={isDark ? "/logos/ndm-dark.png" : "/logos/ndm-light.png"}
+              alt="NDM logo"
+              width={44}
+              height={44}
+              style={{ width: 44, height: 44, objectFit: "contain", display: "block" }}
+              draggable={false}
+            />
           </span>
-        </span>
-      </Link>
-    </motion.div>
+
+          <span style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+            <span
+              className="text-brand-gradient"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: 15,
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              {BRAND.name}
+            </span>
+            <span
+              style={{
+                marginTop: 3,
+                fontSize: 9,
+                fontWeight: 600,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: isDark ? "rgba(255,255,255,0.42)" : "rgba(0,0,0,0.38)",
+              }}
+            >
+              Digital Marketing
+            </span>
+          </span>
+        </Link>
+      </motion.div>
+    </div>
   );
 }
