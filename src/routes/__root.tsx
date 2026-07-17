@@ -15,6 +15,7 @@ import { WhatsAppFloat } from "../components/site/WhatsAppFloat";
 import { BottomNav } from "../components/site/BottomNav";
 import { Footer } from "../components/site/Footer";
 import { VideoBackground } from "../components/site/VideoBackground";
+import { ThemeToggle } from "../components/site/ThemeToggle";
 
 function NotFoundComponent() {
   return (
@@ -56,10 +57,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
+            onClick={() => { router.invalidate(); reset(); }}
             className="bg-brand-gradient inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white"
           >
             Try again
@@ -87,7 +85,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Jellyfish video — always on, fixed behind everything */}
+      {/* Video background — switches between jellyfish (dark) and old-money (light) */}
       <VideoBackground />
 
       {/* Page content — sits above the video */}
@@ -96,6 +94,12 @@ function RootComponent() {
         <FloatingLogo />
         <ScrollProgress />
         <WhatsAppFloat />
+
+        {/* Theme toggle — fixed top-right, away from logo */}
+        <div style={{ position: "fixed", top: 14, right: 14, zIndex: 50 }}>
+          <ThemeToggle />
+        </div>
+
         <main>
           <Outlet />
         </main>

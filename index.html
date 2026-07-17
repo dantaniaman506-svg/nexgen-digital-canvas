@@ -5,6 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0f1e" />
+    <!--
+      THEME SCRIPT — runs synchronously before first paint, no flash.
+      Deploy stamp "20260717" forces everyone back to dark on this deploy.
+      After that, localStorage saves the user's own choice per-browser.
+    -->
+    <script>
+      (function () {
+        var DEPLOY = '20260717';
+        var stamp  = localStorage.getItem('ndm-deploy');
+        var saved  = localStorage.getItem('ndm-theme');
+        if (stamp !== DEPLOY) {
+          // Old storage (pre this deploy) or first visit — reset everyone to dark.
+          localStorage.removeItem('ndm-theme');
+          localStorage.setItem('ndm-deploy', DEPLOY);
+          // HTML already has class="dark" — nothing else needed.
+        } else if (saved === 'light') {
+          // User explicitly picked light AFTER this deploy — honour it.
+          document.documentElement.classList.replace('dark', 'light');
+        }
+        // saved === 'dark' or null → dark stays (class already set in HTML).
+      })();
+    </script>
     <title>Nexgen — Digital Marketing &amp; Growth Agency in Ahmedabad</title>
     <meta
       name="description"
