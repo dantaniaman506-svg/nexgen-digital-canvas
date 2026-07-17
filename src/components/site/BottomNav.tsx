@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { House, Info, Layers, Award, Briefcase, Send } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const items = [
@@ -14,26 +14,36 @@ const items = [
 
 function getDefaultSection(pathname: string) {
   if (pathname === "/") return "hero";
-  const match = items.find((i) => i.to !== "/" && !i.to.startsWith("/#") && pathname.startsWith(i.to));
+  const match = items.find(
+    (i) => i.to !== "/" && !i.to.startsWith("/#") && pathname.startsWith(i.to),
+  );
   return match ? match.sectionId : "hero";
 }
 
 export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [activeSection, setActiveSection] = useState<string>(() => getDefaultSection(pathname));
+  const [activeSection, setActiveSection] = useState<string>(() =>
+    getDefaultSection(pathname),
+  );
+  const [visible, setVisible] = useState(false);
   const scrollSpyPaused = useRef(false);
 
-  // On route change, update immediately
+  // Delay mount animation
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  // On route change update immediately
   useEffect(() => {
     setActiveSection(getDefaultSection(pathname));
   }, [pathname]);
 
-  // Scroll-spy — only on home page
+  // Scroll-spy on home page
   useEffect(() => {
     if (pathname !== "/") return;
-    const ids = items.map((i) => i.sectionId);
-    const elements = ids
-      .map((id) => document.getElementById(id))
+    const elements = items
+      .map((i) => document.getElementById(i.sectionId))
       .filter((el): el is HTMLElement => !!el);
     if (!elements.length) return;
 
@@ -61,76 +71,107 @@ export function BottomNav() {
   }, []);
 
   return (
-    <motion.nav
-      initial={{ y: 60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.4, type: "spring", stiffness: 260, damping: 28 }}
+    /*
+     * IMPORTANT: centering wrapper is a plain div — NOT a motion element.
+     * Framer Motion's animated transforms would override translateX(-50%),
+     * shifting the pill off-center. The motion animation lives on the inner nav.
+     */
+    <div
       style={{
         position: "fixed",
         bottom: 20,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 50,
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-        borderRadius: 9999,
-        padding: "6px 8px",
-        backdropFilter: "blur(24px) saturate(180%)",
-        backgroundColor: "color-mix(in oklab, var(--card) 40%, transparent)",
-        border: "1px solid color-mix(in oklab, var(--border) 60%, transparent)",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
+        pointerEvents: "none",
       }}
     >
-      {items.map((item) => {
-        const Icon = item.icon;
-        const isActive =
-          pathname === "/"
-            ? activeSection === item.sectionId
-            : item.to !== "/" && !item.to.startsWith("/#")
-              ? pathname.startsWith(item.to)
-              : false;
-
-        return (
-          <Link
-            key={item.label}
-            to={item.to}
-            aria-label={item.label}
-            onClick={() => handleClick(item.sectionId)}
+      <AnimatePresence>
+        {visible && (
+          <motion.nav
+            initial={{ y: 60, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 60, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 28 }}
             style={{
-              position: "relative",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              width: 44,
-              height: 44,
-              borderRadius: "50%",
-              color: isActive ? "#fff" : undefined,
-              transition: "color 0.2s",
-              flexShrink: 0,
+              gap: 2,
+              borderRadius: 9999,
+              padding: "6px 8px",
+              backdropFilter: "blur(24px) saturate(180%)",
+              backgroundColor:
+                "color-mix(in oklab, var(--card) 42%, transparent)",
+              border:
+                "1px solid color-mix(in oklab, var(--border) 60%, transparent)",
+              boxShadow:
+                "0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10)",
+              pointerEvents: "auto",
+              whiteSpace: "nowrap",
             }}
-            className={isActive ? "" : "text-brand-blue hover:text-brand-purple"}
           >
-            {isActive && (
-              <motion.span
-                layoutId="pill-active"
-                transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, #4F7FFF 0%, #3EC6E0 100%)",
-                  boxShadow: "0 4px 18px -4px rgba(79,127,255,0.7)",
-                  zIndex: 0,
-                }}
-              />
-            )}
-            <span style={{ position: "relative", zIndex: 1, display: "flex" }}>
-              <Icon size={20} strokeWidth={2.2} />
-            </span>
-          </Link>
-        );
-      })}
-    </motion.nav>
+            {items.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                pathname === "/"
+                  ? activeSection === item.sectionId
+                  : item.to !== "/" && !item.to.startsWith("/#")
+                    ? pathname.startsWith(item.to)
+                    : false;
+
+              return (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  aria-label={item.label}
+                  onClick={() => handleClick(item.sectionId)}
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 44,
+                    height: 44,
+                    borderRadius: "50%",
+                    flexShrink: 0,
+                    color: isActive ? "#fff" : "var(--color-brand-blue)",
+                    transition: "color 0.2s",
+                  }}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="pill-active"
+                      transition={{
+                        type: "spring",
+                        stiffness: 420,
+                        damping: 34,
+                      }}
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "50%",
+                        background:
+                          "linear-gradient(135deg, #4F7FFF 0%, #3EC6E0 100%)",
+                        boxShadow: "0 4px 18px -4px rgba(79,127,255,0.70)",
+                        zIndex: 0,
+                      }}
+                    />
+                  )}
+                  <span
+                    style={{
+                      position: "relative",
+                      zIndex: 1,
+                      display: "flex",
+                    }}
+                  >
+                    <Icon size={20} strokeWidth={2.2} />
+                  </span>
+                </Link>
+              );
+            })}
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
