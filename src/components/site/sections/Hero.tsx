@@ -11,7 +11,7 @@ import {
 
 export function Hero() {
   return (
-    <section id="hero" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 pt-24 pb-16">
+    <section id="hero" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 pt-24 pb-16 lg:pt-20">
       <GradientBlobs />
       <div className="relative z-10 mx-auto max-w-5xl text-center">
         <motion.div

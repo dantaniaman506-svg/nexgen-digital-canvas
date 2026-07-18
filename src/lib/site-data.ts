@@ -43,10 +43,10 @@ export const CONTACT = {
   whatsappNumber: "919664946844",
   email: "hello@nexgendigital.in",
   address:
-    "The Emporio, 412, Visat, Sarkhej–Gandhinagar Hwy, opp. 4D Square Mall, Kalpana Nagar, Nigam Nagar, Motera, Ahmedabad, Gujarat 382424",
+    "The Emporio, 412, Visat, Sarkhej - Gandhinagar Hwy, opp. 4D Square Mall, Kalpana Nagar, Nigam Nagar, Motera, Ahmedabad, Gujarat 382424",
   city: "Ahmedabad, Gujarat",
   mapsQuery:
-    "The+Emporio+412+Visat+Sarkhej+Gandhinagar+Hwy+Motera+Ahmedabad+Gujarat+382424",
+    "The+Emporio+412+Visat+Sarkhej-Gandhinagar+Hwy+opp+4D+Square+Mall+Kalpana+Nagar+Motera+Ahmedabad+Gujarat+382424",
   instagram: "#",
   facebook: "#",
   linkedin: "#",

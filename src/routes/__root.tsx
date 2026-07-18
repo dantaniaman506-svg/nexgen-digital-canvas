@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SmoothScroll } from "../components/site/SmoothScroll";
 import { FloatingLogo } from "../components/site/FloatingLogo";
+import { DesktopNav } from "../components/site/DesktopNav";
 import { ScrollProgress } from "../components/site/ScrollProgress";
 import { WhatsAppFloat } from "../components/site/WhatsAppFloat";
 import { BottomNav } from "../components/site/BottomNav";
@@ -85,26 +86,42 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Video background — switches between jellyfish (dark) and old-money (light) */}
+      {/* Full-page video background */}
       <VideoBackground />
 
-      {/* Page content — sits above the video */}
+      {/* Desktop sticky nav — hidden on mobile/tablet, shown on lg+ */}
+      <DesktopNav />
+
+      {/* Page content */}
       <div className="relative z-[1] min-h-screen bg-transparent text-foreground">
         <SmoothScroll />
-        <FloatingLogo />
+
+        {/* Mobile/tablet only: floating logo top-left */}
+        <div className="lg:hidden">
+          <FloatingLogo />
+        </div>
+
         <ScrollProgress />
         <WhatsAppFloat />
 
-        {/* Theme toggle — fixed top-right, away from logo */}
-        <div style={{ position: "fixed", top: 14, right: 14, zIndex: 50 }}>
+        {/* Mobile/tablet only: theme toggle top-right (desktop nav has its own) */}
+        <div
+          className="lg:hidden"
+          style={{ position: "fixed", top: 14, right: 14, zIndex: 50 }}
+        >
           <ThemeToggle />
         </div>
 
         <main>
           <Outlet />
         </main>
+
         <Footer />
-        <BottomNav />
+
+        {/* Bottom nav: mobile + tablet only */}
+        <div className="lg:hidden">
+          <BottomNav />
+        </div>
       </div>
     </QueryClientProvider>
   );

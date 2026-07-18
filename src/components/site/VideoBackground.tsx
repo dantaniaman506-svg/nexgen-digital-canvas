@@ -1,20 +1,70 @@
 import { useEffect, useRef, useState } from "react";
 
-function DarkVideo({ visible }: { visible: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
-
+/** Keeps a video element playing at all times — survives tab switches, phone locks, and iOS suspensions. */
+function useKeepAlive(
+  ref: React.RefObject<HTMLVideoElement | null>,
+  visible: boolean,
+  rate = 1,
+) {
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
-    v.playbackRate = 1.4;
-    if (visible) v.play().catch(() => {});
-    else v.pause();
-  }, [visible]);
+
+    v.playbackRate = rate;
+
+    const tryPlay = () => {
+      if (!visible) return;
+      if (v.paused || v.ended) {
+        v.play().catch(() => {
+          // iOS sometimes needs a second attempt after a very short delay
+          setTimeout(() => v.play().catch(() => {}), 250);
+        });
+      }
+    };
+
+    // Initial play/pause
+    if (visible) {
+      tryPlay();
+    } else {
+      v.pause();
+    }
+
+    // Re-play when the user returns from another app, lock screen, or tab
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") tryPlay();
+    };
+    // Re-play when the window regains focus (desktop tab switch)
+    const onFocus = () => tryPlay();
+    // Re-play if the browser suspends/stalls the video (e.g. low memory)
+    const onSuspend = () => { if (visible) setTimeout(tryPlay, 400); };
+    const onStalled  = () => { if (visible) setTimeout(tryPlay, 400); };
+    // Re-play if the video ends despite loop (some browsers miss the loop attribute on resume)
+    const onEnded    = () => { if (visible) { v.currentTime = 0; tryPlay(); } };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("focus", onFocus);
+    v.addEventListener("suspend", onSuspend);
+    v.addEventListener("stalled",  onStalled);
+    v.addEventListener("ended",    onEnded);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("focus", onFocus);
+      v.removeEventListener("suspend", onSuspend);
+      v.removeEventListener("stalled",  onStalled);
+      v.removeEventListener("ended",    onEnded);
+    };
+  }, [visible, rate]);
+}
+
+function DarkVideo({ visible }: { visible: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useKeepAlive(ref, visible, 1.4);
 
   return (
     <div
       className="absolute inset-0 transition-opacity duration-700"
-      style={{ opacity: visible ? 1 : 0 }}
+      style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
       <video
         ref={ref}
@@ -23,9 +73,13 @@ function DarkVideo({ visible }: { visible: boolean }) {
         playsInline
         autoPlay
         preload="auto"
+        disablePictureInPicture
         className="h-full w-full object-cover"
         src="/videos/jellyfish.mp4"
+        // iOS Safari extra attributes
+        {...({ "webkit-playsinline": "true", "x-webkit-airplay": "deny" } as object)}
       />
+      {/* Dark tint overlays */}
       <div
         className="absolute inset-0"
         style={{
@@ -46,28 +100,26 @@ function DarkVideo({ visible }: { visible: boolean }) {
 
 function LightVideo({ visible }: { visible: boolean }) {
   const ref = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const v = ref.current;
-    if (!v) return;
-    if (visible) v.play().catch(() => {});
-    else v.pause();
-  }, [visible]);
+  useKeepAlive(ref, visible, 1);
 
   return (
     <div
       className="absolute inset-0 transition-opacity duration-700"
-      style={{ opacity: visible ? 1 : 0 }}
+      style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
       <video
         ref={ref}
         loop
         muted
         playsInline
+        autoPlay
         preload="auto"
+        disablePictureInPicture
         className="h-full w-full object-cover"
         src="/videos/hero-light.mp4"
+        {...({ "webkit-playsinline": "true", "x-webkit-airplay": "deny" } as object)}
       />
+      {/* Light tint overlays */}
       <div
         className="absolute inset-0"
         style={{
@@ -86,7 +138,7 @@ function LightVideo({ visible }: { visible: boolean }) {
   );
 }
 
-/** Dual-video background. Listens to <html> class changes for seamless switching. */
+/** Full-page video background. Switches between jellyfish (dark) and light video on theme change. */
 export function VideoBackground() {
   const [isDark, setIsDark] = useState(
     () => document.documentElement.classList.contains("dark"),
@@ -102,8 +154,12 @@ export function VideoBackground() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-      <DarkVideo visible={isDark} />
+    <div
+      className="pointer-events-none fixed inset-0 z-0"
+      aria-hidden="true"
+      style={{ willChange: "opacity" }}
+    >
+      <DarkVideo  visible={isDark}  />
       <LightVideo visible={!isDark} />
     </div>
   );

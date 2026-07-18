@@ -13,7 +13,7 @@ import { BRAND, CONTACT } from "@/lib/site-data";
 /** Always dark-styled — no theme branching. */
 export function Footer() {
   return (
-    <footer className="relative z-[2] px-5 pt-16 pb-40">
+    <footer className="relative z-[2] px-5 pt-16 pb-40 lg:pb-16">
       <div
         className="mx-auto max-w-6xl rounded-3xl p-8"
         style={{
@@ -73,7 +73,14 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-brand-blue" />
-                <span>{CONTACT.city}</span>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${CONTACT.mapsQuery}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-blue transition-colors leading-snug"
+                >
+                  {CONTACT.address}
+                </a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="h-4 w-4 mt-0.5 shrink-0 text-brand-blue" />
