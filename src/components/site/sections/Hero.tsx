@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, Phone, ShieldCheck, ChevronDown } from "lucide-react";
 import { CONTACT, BRAND } from "@/lib/site-data";
 import { GradientBlobs } from "../GradientBlobs";
+import { hapticMedium, hapticLight } from "@/lib/haptic";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,6 +54,7 @@ export function Hero() {
         >
           <a
             href="#contact"
+            onClick={() => hapticMedium()}
             className="bg-brand-gradient brand-glow-shadow group inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-white transition-transform hover:scale-[1.02]"
           >
             Get a Free Growth Plan
@@ -63,6 +65,7 @@ export function Hero() {
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
+                onClick={() => hapticLight()}
                 className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-foreground transition-transform hover:scale-[1.02]"
               >
                 <Phone className="h-4 w-4 text-brand-blue" />
@@ -78,6 +81,7 @@ export function Hero() {
               <DropdownMenuItem asChild className="rounded-xl focus:bg-transparent">
                 <a
                   href={`tel:${CONTACT.phone1Tel}`}
+                  onClick={() => hapticMedium()}
                   className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--brand-blue)_14%,transparent)]"
                 >
                   <span className="bg-brand-gradient flex h-9 w-9 items-center justify-center rounded-full text-white">
@@ -92,6 +96,7 @@ export function Hero() {
               <DropdownMenuItem asChild className="rounded-xl focus:bg-transparent">
                 <a
                   href={`tel:${CONTACT.phone2Tel}`}
+                  onClick={() => hapticMedium()}
                   className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[color-mix(in_oklab,var(--brand-blue)_14%,transparent)]"
                 >
                   <span className="bg-brand-gradient flex h-9 w-9 items-center justify-center rounded-full text-white">

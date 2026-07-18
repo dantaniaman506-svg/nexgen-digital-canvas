@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { z } from "zod";
 import { Send, MessageCircle, X, ChevronRight } from "lucide-react";
 import { BRAND, CONTACT, services, industries } from "@/lib/site-data";
+import { hapticSuccess, hapticHeavy, hapticLight } from "@/lib/haptic";
 import {
   Select,
   SelectContent,
@@ -118,6 +119,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
     setValidated(true);
     const data = validate();
     if (!data) return;
+    hapticSuccess();
     setShowRecipientModal(true);
   };
 
@@ -138,6 +140,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
     if (values.message.trim())
       lines.push(`*💬 Message:* ${values.message.trim()}`);
     const url = `https://wa.me/${waDigits}?text=${encodeURIComponent(lines.join("\n"))}`;
+    hapticHeavy();
     setSent(r.id);
     setTimeout(() => {
       window.open(url, "_blank");
@@ -342,7 +345,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
                   </p>
                 </div>
                 <button
-                  onClick={() => setShowRecipientModal(false)}
+                  onClick={() => { hapticLight(); setShowRecipientModal(false); }}
                   className="mt-0.5 rounded-full p-2 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
                   aria-label="Close"
                 >

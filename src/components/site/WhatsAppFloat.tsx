@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { CONTACT } from "@/lib/site-data";
+import { hapticMedium } from "@/lib/haptic";
 
 // Official WhatsApp SVG icon — green circle, white logo, no background bleed
 function WhatsAppIcon({ size = 52 }: { size?: number }) {
@@ -36,6 +37,7 @@ export function WhatsAppFloat() {
       transition={{ type: "spring", stiffness: 200, damping: 15, delay: 1.2 }}
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.92 }}
+      onClick={() => hapticMedium()}
       aria-label="Chat on WhatsApp"
       style={{
         position: "fixed",

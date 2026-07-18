@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { House, Info, Layers, Award, Briefcase, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { hapticLight } from "@/lib/haptic";
 
 const items = [
   { to: "/", label: "Home", icon: House, sectionId: "hero" },
@@ -103,6 +104,7 @@ export function BottomNav() {
   const handleClick = useCallback(
     (sectionId: string, to: string) => {
       // Immediately update the indicator — never let a later effect override it
+      hapticLight();
       setActiveSection(sectionId);
       // Pause scroll-spy for 1.2 s so the scroll animation doesn't fight us
       pauseUntil.current = Date.now() + 1200;
