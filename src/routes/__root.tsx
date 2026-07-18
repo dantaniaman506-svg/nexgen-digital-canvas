@@ -93,7 +93,7 @@ function RootComponent() {
       <DesktopNav />
 
       {/* Page content */}
-      <div className="relative z-[1] min-h-screen bg-transparent text-foreground">
+      <div className="relative z-[1] min-h-screen bg-transparent text-foreground" style={{ overflowX: "clip" }}>
         <SmoothScroll />
 
         {/* Mobile/tablet only: floating logo top-left */}

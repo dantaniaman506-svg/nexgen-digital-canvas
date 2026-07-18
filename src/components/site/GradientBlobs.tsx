@@ -9,7 +9,7 @@ export function GradientBlobs() {
   const rot = useTransform(scrollYProgress, [0, 1], [0, 25]);
 
   return (
-    <div ref={ref} className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div ref={ref} className="pointer-events-none absolute inset-0" style={{ overflow: "clip" }}>
       {/* Corner blob — top left, soft */}
       <motion.div
         style={{
