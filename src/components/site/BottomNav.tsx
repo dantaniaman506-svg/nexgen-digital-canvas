@@ -16,26 +16,50 @@ const ITEM_SIZE = 44;
 const ITEM_GAP = 4;
 const STEP = ITEM_SIZE + ITEM_GAP;
 
-function getDefaultSection(pathname: string) {
-  if (pathname === "/") return "hero";
+/** Returns which section is most prominent in the viewport right now */
+function detectCurrentSection(): string {
+  const viewportMid = window.scrollY + window.innerHeight * 0.45;
+  let best = "hero";
+  let bestDist = Infinity;
+
+  for (const item of items) {
+    const el = document.getElementById(item.sectionId);
+    if (!el) continue;
+    const top = el.offsetTop;
+    const dist = Math.abs(top - viewportMid);
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = item.sectionId;
+    }
+  }
+  return best;
+}
+
+/** Map a non-home pathname to its matching sectionId */
+function sectionForPath(pathname: string): string | null {
   const match = items.find(
     (i) => i.to !== "/" && !i.to.startsWith("/#") && pathname.startsWith(i.to),
   );
-  return match ? match.sectionId : "hero";
+  return match ? match.sectionId : null;
 }
 
 export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [activeSection, setActiveSection] = useState<string>(() =>
-    getDefaultSection(pathname),
-  );
+  const isHome = pathname === "/";
+
+  const [activeSection, setActiveSection] = useState<string>(() => {
+    if (isHome) return "hero";
+    return sectionForPath(pathname) ?? "hero";
+  });
   const [visible, setVisible] = useState(false);
   const [isDark, setIsDark] = useState(
     () => document.documentElement.classList.contains("dark"),
   );
-  const scrollSpyPaused = useRef(false);
 
-  /* Delayed mount so it slides up after page load */
+  // When true, scroll-spy won't override a manually clicked section
+  const pauseUntil = useRef<number>(0);
+
+  /* Delayed mount — slides up after page load */
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 500);
     return () => clearTimeout(t);
@@ -51,48 +75,46 @@ export function BottomNav() {
     return () => obs.disconnect();
   }, []);
 
-  /* Reset active section on route change */
+  /* On route change to a non-home page, lock the indicator to that page's section */
   useEffect(() => {
-    setActiveSection(getDefaultSection(pathname));
-  }, [pathname]);
-
-  /* Scroll-spy — home page only */
-  useEffect(() => {
-    if (pathname !== "/") return;
-    const elements = items
-      .map((i) => document.getElementById(i.sectionId))
-      .filter((el): el is HTMLElement => !!el);
-    if (!elements.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (scrollSpyPaused.current) return;
-        const vis = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (vis[0]) setActiveSection(vis[0].target.id);
-      },
-      { rootMargin: "-35% 0px -35% 0px", threshold: [0, 0.1, 0.5, 1] },
-    );
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [pathname]);
-
-  const handleClick = useCallback((sectionId: string, to: string) => {
-    setActiveSection(sectionId);
-    scrollSpyPaused.current = true;
-
-    /* For hash-only links on home, manually scroll to section */
-    if (to.startsWith("/#")) {
-      const id = to.slice(2);
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (!isHome) {
+      const s = sectionForPath(pathname);
+      if (s) setActiveSection(s);
     }
+    // On home, scroll-spy will take over — don't reset here
+  }, [pathname, isHome]);
 
-    setTimeout(() => {
-      scrollSpyPaused.current = false;
-    }, 1000);
-  }, []);
+  /* Scroll-spy — home page only, using scroll event for reliability */
+  useEffect(() => {
+    if (!isHome) return;
+
+    const onScroll = () => {
+      if (Date.now() < pauseUntil.current) return;
+      setActiveSection(detectCurrentSection());
+    };
+
+    // Run once immediately so initial position is correct
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome]);
+
+  const handleClick = useCallback(
+    (sectionId: string, to: string) => {
+      // Immediately update the indicator — never let a later effect override it
+      setActiveSection(sectionId);
+      // Pause scroll-spy for 1.2 s so the scroll animation doesn't fight us
+      pauseUntil.current = Date.now() + 1200;
+
+      if (to.startsWith("/#") && isHome) {
+        const id = to.slice(2);
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+    },
+    [isHome],
+  );
 
   const activeIndex = items.findIndex((i) => i.sectionId === activeSection);
 
@@ -167,12 +189,7 @@ export function BottomNav() {
 
             {items.map((item) => {
               const Icon = item.icon;
-              const isActive =
-                pathname === "/"
-                  ? activeSection === item.sectionId
-                  : item.to !== "/" && !item.to.startsWith("/#")
-                    ? pathname.startsWith(item.to)
-                    : false;
+              const isActive = activeSection === item.sectionId;
 
               return (
                 <Link
