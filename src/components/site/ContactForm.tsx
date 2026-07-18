@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { z } from "zod";
-import { Send, Check, Phone, X } from "lucide-react";
+import { Send, MessageCircle, X, ChevronRight } from "lucide-react";
 import { BRAND, CONTACT, services, industries } from "@/lib/site-data";
 import {
   Select,
@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createPortal } from "react-dom";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your full name").max(80),
@@ -29,14 +30,22 @@ const recipients = [
     name: CONTACT.phone1Name,
     phone: CONTACT.phone1,
     wa: CONTACT.phone1Tel,
+    initials: CONTACT.phone1Name.split(" ").map((n: string) => n[0]).join("").slice(0, 2),
   },
   {
     id: "prem",
     name: CONTACT.phone2Name,
     phone: CONTACT.phone2,
     wa: CONTACT.phone2Tel,
+    initials: CONTACT.phone2Name.split(" ").map((n: string) => n[0]).join("").slice(0, 2),
   },
 ];
+
+/** Strips everything except digits from the phone field, keeps +91 prefix */
+function formatPhone(raw: string) {
+  // allow +, digits, spaces, dashes only
+  return raw.replace(/[^\d +\-]/g, "");
+}
 
 export function ContactForm({ dense = false }: { dense?: boolean }) {
   const [values, setValues] = useState({
@@ -45,12 +54,13 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
     industry: "",
     industryCustom: "",
     service: "",
-    phone: "+91 ",
+    phone: "",
     message: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showRecipientModal, setShowRecipientModal] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [sent, setSent] = useState<string | null>(null); // which recipient was chosen
   const modalRef = useRef<HTMLDivElement>(null);
 
   const update = (k: keyof typeof values, v: string) => {
@@ -58,6 +68,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
     if (validated) setErrors((prev) => ({ ...prev, [k]: "" }));
   };
 
+  // Close modal on outside click
   useEffect(() => {
     if (!showRecipientModal) return;
     const handler = (e: MouseEvent) => {
@@ -65,24 +76,41 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
         setShowRecipientModal(false);
       }
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    // small delay so the click that opened it doesn't immediately close it
+    const t = setTimeout(() => document.addEventListener("mousedown", handler), 50);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener("mousedown", handler);
+    };
+  }, [showRecipientModal]);
+
+  // Trap Escape key
+  useEffect(() => {
+    if (!showRecipientModal) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowRecipientModal(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, [showRecipientModal]);
 
   const validate = () => {
     const industryValue =
       values.industry === "Other" ? values.industryCustom : values.industry;
-    const parsed = schema.safeParse({ ...values, industry: industryValue });
-    if (!parsed.success) {
+    const phoneVal = values.phone.trim() === "" ? "" : values.phone.trim();
+    const parsed = schema.safeParse({ ...values, industry: industryValue, phone: phoneVal || "x" });
+    // re-run proper
+    const result = schema.safeParse({ ...values, industry: industryValue });
+    if (!result.success) {
       const errs: Record<string, string> = {};
-      for (const issue of parsed.error.issues) {
+      for (const issue of result.error.issues) {
         errs[issue.path[0] as string] = issue.message;
       }
       setErrors(errs);
       return null;
     }
     setErrors({});
-    return { ...parsed.data, industry: industryValue };
+    return { ...result.data, industry: industryValue };
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -93,35 +121,39 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
     setShowRecipientModal(true);
   };
 
-  const sendToRecipient = (wa: string) => {
-    const waDigits = wa.replace(/\D/g, "");
+  const sendToRecipient = (r: (typeof recipients)[0]) => {
+    const waDigits = r.wa.replace(/\D/g, "");
     const industryValue =
       values.industry === "Other" ? values.industryCustom : values.industry;
+    const phoneDisplay = values.phone.trim() || "Not provided";
     const lines = [
       `*New Lead — ${BRAND.name}*`,
-      `*Name:* ${values.name.trim()}`,
-      `*Business:* ${values.business.trim()}`,
-      `*Industry:* ${industryValue}`,
-      `*Service Interested In:* ${values.service}`,
-      `*Phone:* ${values.phone.trim()}`,
+      `━━━━━━━━━━━━━━━━━━━━`,
+      `*👤 Name:* ${values.name.trim()}`,
+      `*🏢 Business:* ${values.business.trim()}`,
+      `*🏭 Industry:* ${industryValue}`,
+      `*🎯 Service:* ${values.service}`,
+      `*📞 Phone:* ${phoneDisplay}`,
     ];
     if (values.message.trim())
-      lines.push(`*Message:* ${values.message.trim()}`);
+      lines.push(`*💬 Message:* ${values.message.trim()}`);
     const url = `https://wa.me/${waDigits}?text=${encodeURIComponent(lines.join("\n"))}`;
-    window.open(url, "_blank");
-    setShowRecipientModal(false);
+    setSent(r.id);
+    setTimeout(() => {
+      window.open(url, "_blank");
+      setShowRecipientModal(false);
+      setSent(null);
+    }, 350);
   };
 
   const inputCls =
     "w-full rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm outline-none transition-colors focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 placeholder:text-muted-foreground/60";
 
-  /* Trigger styled to match the glass inputs */
   const triggerCls =
     "h-auto w-full rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm text-left transition-colors hover:border-brand-blue focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30 data-[placeholder]:text-muted-foreground/60";
 
-  /* Dropdown content styled to match dark glass theme */
   const contentCls =
-    "z-50 rounded-2xl border border-border bg-popover/95 backdrop-blur-xl shadow-xl p-1";
+    "z-[200] rounded-2xl border border-border bg-popover/95 backdrop-blur-xl shadow-xl p-1";
 
   const itemCls =
     "rounded-xl px-3 py-2 text-sm cursor-pointer focus:bg-brand-blue/10 focus:text-foreground data-[highlighted]:bg-brand-blue/10";
@@ -167,7 +199,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
             )}
           </div>
 
-          {/* Industry — custom Radix Select */}
+          {/* Industry */}
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
               Industry
@@ -207,7 +239,7 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
             )}
           </div>
 
-          {/* Service — custom Radix Select */}
+          {/* Service */}
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
               Service Interested In
@@ -232,17 +264,27 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
             )}
           </div>
 
-          {/* Phone */}
+          {/* Phone — +91 badge + clean input */}
           <div className="sm:col-span-2">
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
-              Phone (WhatsApp)
+              WhatsApp Number
             </label>
-            <input
-              className={inputCls}
-              value={values.phone}
-              onChange={(e) => update("phone", e.target.value)}
-              placeholder="+91 99999 99999"
-            />
+            <div className="flex gap-2">
+              {/* Country badge */}
+              <div className="flex shrink-0 items-center gap-1.5 rounded-2xl border border-border bg-background/60 px-3 py-3 text-sm font-medium select-none">
+                <span className="text-base leading-none">🇮🇳</span>
+                <span className="text-muted-foreground">+91</span>
+              </div>
+              {/* Number input — no +91 prefix in state, cleaner */}
+              <input
+                className={`${inputCls} flex-1`}
+                value={values.phone}
+                onChange={(e) => update("phone", formatPhone(e.target.value))}
+                placeholder="99999 99999"
+                inputMode="tel"
+                maxLength={15}
+              />
+            </div>
             {errors.phone && (
               <p className="mt-1 text-xs text-destructive">{errors.phone}</p>
             )}
@@ -271,57 +313,112 @@ export function ContactForm({ dense = false }: { dense?: boolean }) {
         </button>
       </form>
 
-      {/* Recipient chooser modal */}
-      {showRecipientModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+      {/* Recipient modal — rendered via portal so it's always on top of everything */}
+      {showRecipientModal &&
+        createPortal(
           <div
-            ref={modalRef}
-            className="glass w-full max-w-sm rounded-3xl p-6 shadow-2xl"
+            className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
+            style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
           >
-            <div className="mb-5 flex items-start justify-between gap-3">
-              <div>
-                <h3 className="font-display text-lg font-bold">
-                  Who should we contact?
-                </h3>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Choose a team member to send your message to
-                </p>
-              </div>
-              <button
-                onClick={() => setShowRecipientModal(false)}
-                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              {recipients.map((r) => (
+            <div
+              ref={modalRef}
+              className="w-full max-w-sm rounded-3xl border border-white/10 shadow-2xl overflow-hidden"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(15,15,25,0.97) 0%, rgba(10,10,20,0.99) 100%)",
+              }}
+            >
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-brand-blue mb-1">
+                    Send via WhatsApp
+                  </p>
+                  <h3 className="font-display text-xl font-bold text-white leading-tight">
+                    Choose a team member
+                  </h3>
+                  <p className="mt-1 text-sm text-white/50">
+                    Your message goes directly to their WhatsApp
+                  </p>
+                </div>
                 <button
-                  key={r.id}
-                  onClick={() => sendToRecipient(r.wa)}
-                  className="group flex w-full items-center gap-4 rounded-2xl border border-border bg-background/40 px-4 py-4 text-left transition-all hover:border-brand-blue hover:bg-brand-blue/5 hover:shadow-md"
+                  onClick={() => setShowRecipientModal(false)}
+                  className="mt-0.5 rounded-full p-2 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+                  aria-label="Close"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-blue/10 text-brand-blue transition-colors group-hover:bg-brand-blue group-hover:text-white">
-                    <Phone className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold leading-tight">{r.name}</p>
-                    <p className="mt-0.5 text-sm text-muted-foreground">
-                      {r.phone}
-                    </p>
-                  </div>
-                  <Check className="h-4 w-4 shrink-0 text-brand-blue opacity-0 transition-opacity group-hover:opacity-100" />
+                  <X className="h-4 w-4" />
                 </button>
-              ))}
-            </div>
+              </div>
 
-            <p className="mt-4 text-center text-xs text-muted-foreground">
-              You'll be redirected to WhatsApp — choose either contact
-            </p>
-          </div>
-        </div>
-      )}
+              {/* Divider */}
+              <div className="mx-6 h-px bg-white/8" />
+
+              {/* Recipient cards */}
+              <div className="flex flex-col gap-3 p-5">
+                {recipients.map((r) => {
+                  const isChosen = sent === r.id;
+                  return (
+                    <button
+                      key={r.id}
+                      onClick={() => sendToRecipient(r)}
+                      disabled={sent !== null}
+                      className={[
+                        "group relative flex w-full items-center gap-4 rounded-2xl px-4 py-4 text-left transition-all duration-200",
+                        isChosen
+                          ? "bg-brand-blue/20 border border-brand-blue/60 scale-[0.98]"
+                          : "border border-white/8 bg-white/5 hover:bg-white/10 hover:border-brand-blue/40 hover:scale-[1.01] active:scale-[0.99]",
+                      ].join(" ")}
+                    >
+                      {/* Avatar */}
+                      <div
+                        className={[
+                          "flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors",
+                          isChosen
+                            ? "bg-brand-blue text-white"
+                            : "bg-brand-blue/15 text-brand-blue group-hover:bg-brand-blue group-hover:text-white",
+                        ].join(" ")}
+                      >
+                        {r.initials}
+                      </div>
+
+                      {/* Info */}
+                      <div className="min-w-0 flex-1">
+                        <p className="font-display font-semibold text-white text-base leading-tight">
+                          {r.name}
+                        </p>
+                        <p className="mt-0.5 text-sm text-white/50 font-mono tracking-wide">
+                          {r.phone}
+                        </p>
+                      </div>
+
+                      {/* Arrow / WA icon */}
+                      <div
+                        className={[
+                          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all",
+                          isChosen
+                            ? "bg-brand-blue text-white"
+                            : "bg-white/5 text-white/30 group-hover:bg-brand-blue/20 group-hover:text-brand-blue",
+                        ].join(" ")}
+                      >
+                        {isChosen ? (
+                          <MessageCircle className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Footer note */}
+              <p className="text-center text-xs text-white/30 pb-5">
+                Opens WhatsApp — your details are pre-filled
+              </p>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
