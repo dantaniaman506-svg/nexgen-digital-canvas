@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { soundLightMode, soundDarkMode } from "@/lib/sound";
 
 const DEPLOY = "20260717";
 
@@ -40,6 +41,7 @@ export function ThemeToggle() {
     const next = !isDark;
     applyTheme(next);
     setIsDark(next);
+    if (next) soundDarkMode(); else soundLightMode();
   };
 
   return (
