@@ -107,10 +107,15 @@ export function BottomNav() {
       // Pause scroll-spy for 1.2 s so the scroll animation doesn't fight us
       pauseUntil.current = Date.now() + 1200;
 
-      if (to.startsWith("/#") && isHome) {
-        const id = to.slice(2);
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
+      if (isHome) {
+        if (to === "/") {
+          // Home icon — jump to top instantly
+          window.scrollTo({ top: 0, behavior: "instant" });
+        } else if (to.startsWith("/#")) {
+          const id = to.slice(2);
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "instant" });
+        }
       }
     },
     [isHome],
