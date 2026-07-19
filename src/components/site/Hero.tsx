@@ -37,8 +37,7 @@ export function Hero() {
           transition={{ duration: 0.6 }}
           className="glass mx-auto inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm"
           style={{
-            backdropFilter: "blur(16px)",
-            backgroundColor: "color-mix(in oklab, var(--card) 30%, transparent)",
+            backgroundColor: "color-mix(in oklab, var(--card) 55%, transparent)",
             boxShadow: "0 2px 24px oklch(0.64 0.20 248 / 0.12), inset 0 1px 0 oklch(1 0 0 / 0.3)",
           }}
         >
@@ -105,8 +104,7 @@ export function Hero() {
                 type="button"
                 className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-foreground transition-all hover:scale-[1.03]"
                 style={{
-                  backdropFilter: "blur(16px)",
-                  backgroundColor: "color-mix(in oklab, var(--card) 30%, transparent)",
+                  backgroundColor: "color-mix(in oklab, var(--card) 55%, transparent)",
                   boxShadow:
                     "0 2px 20px oklch(0.64 0.20 248 / 0.10), inset 0 1px 0 oklch(1 0 0 / 0.25)",
                 }}

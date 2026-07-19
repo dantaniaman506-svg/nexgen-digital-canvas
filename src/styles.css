@@ -154,9 +154,10 @@
   content: "";
   position: absolute;
   inset: 0;
-  /* Only ~30% tint — video stays vivid underneath */
-  background: oklch(0.10 0.03 265 / 0.30);
-  backdrop-filter: blur(2px);
+  /* Only ~30% tint — video stays vivid underneath.
+     No backdrop-filter here — it forces GPU repaint on every scroll tick
+     across every section, causing heavy jank on mobile. */
+  background: oklch(0.10 0.03 265 / 0.32);
   z-index: 0;
   pointer-events: none;
 }

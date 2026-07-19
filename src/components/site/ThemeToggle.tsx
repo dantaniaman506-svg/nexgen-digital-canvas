@@ -81,14 +81,16 @@ export function ThemeToggle() {
         width: 40,
         height: 40,
         borderRadius: 12,
-        backdropFilter: "blur(20px) saturate(160%)",
+        /* Solid — no backdrop-filter for mobile GPU savings */
         backgroundColor: isDark
-          ? "rgba(255,255,255,0.08)"
-          : "rgba(0,0,0,0.08)",
+          ? "rgba(30,36,80,0.90)"
+          : "rgba(230,233,255,0.92)",
         border: isDark
           ? "1px solid rgba(255,255,255,0.12)"
-          : "1px solid rgba(0,0,0,0.10)",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+          : "1px solid rgba(120,140,255,0.30)",
+        boxShadow: isDark
+          ? "0 2px 12px rgba(0,0,0,0.30)"
+          : "0 2px 12px rgba(80,120,255,0.15)",
         cursor: "pointer",
         transition: "background 0.3s, border 0.3s",
       }}

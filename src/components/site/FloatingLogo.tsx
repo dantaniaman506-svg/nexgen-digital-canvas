@@ -40,17 +40,17 @@ export function FloatingLogo() {
             gap: 10,
             borderRadius: 9999,
             padding: "6px 16px 6px 6px",
-            backdropFilter: "blur(28px) saturate(200%)",
-            WebkitBackdropFilter: "blur(28px) saturate(200%)",
+            /* Solid background — no backdrop-filter (GPU cost on mobile) */
             backgroundColor: isDark
-              ? "rgba(0,0,0,0.52)"
-              : "rgba(255,255,255,0.62)",
+              ? "rgba(12,16,44,0.92)"
+              : "rgba(248,249,255,0.95)",
             border: isDark
-              ? "1px solid rgba(255,255,255,0.12)"
-              : "1px solid rgba(255,255,255,0.90)",
+              ? "1px solid rgba(255,255,255,0.10)"
+              : "1px solid rgba(180,190,255,0.50)",
             boxShadow: isDark
-              ? "0 4px 28px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.07)"
-              : "0 4px 24px rgba(80,120,255,0.10), 0 1px 0 rgba(255,255,255,0.80) inset",
+              ? "0 4px 28px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)"
+              : "0 4px 24px rgba(80,120,255,0.14), 0 1px 0 rgba(255,255,255,1) inset",
+            willChange: "transform",
             textDecoration: "none",
             transition:
               "background-color 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.2s",

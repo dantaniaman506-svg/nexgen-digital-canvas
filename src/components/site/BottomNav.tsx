@@ -144,9 +144,11 @@ export function BottomNav() {
         position: "fixed",
         bottom: 24,
         left: "50%",
+        /* translateX in its own layer — no backdrop-filter on wrapper */
         transform: "translateX(-50%)",
         zIndex: 50,
         pointerEvents: "none",
+        willChange: "transform",
       }}
     >
       <AnimatePresence>
@@ -164,20 +166,25 @@ export function BottomNav() {
               gap: ITEM_GAP,
               borderRadius: 9999,
               padding: "6px 8px",
-              backdropFilter: "blur(32px) saturate(200%)",
-              WebkitBackdropFilter: "blur(32px) saturate(200%)",
+              /* ── Solid background instead of backdrop-filter ──────────────
+                 backdrop-filter on mobile Chrome splits at child-element
+                 boundaries causing the half-dark / half-white glitch.
+                 A solid semi-opaque pill looks just as good and is GPU-free.
+              */
               backgroundColor: isDark
-                ? "rgba(10,15,40,0.70)"
-                : "rgba(255,255,255,0.68)",
+                ? "rgba(14,18,48,0.94)"
+                : "rgba(245,247,255,0.96)",
               border: isDark
                 ? "1px solid rgba(255,255,255,0.10)"
-                : "1px solid rgba(255,255,255,0.92)",
+                : "1px solid rgba(180,190,255,0.55)",
               boxShadow: isDark
-                ? "0 8px 40px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.08)"
-                : "0 8px 40px rgba(80,120,255,0.12), 0 2px 0 rgba(255,255,255,0.90) inset",
+                ? "0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.07)"
+                : "0 8px 32px rgba(80,120,255,0.18), 0 1px 0 rgba(255,255,255,1) inset",
               pointerEvents: "auto",
               whiteSpace: "nowrap",
-              transition: "background-color 0.35s, border-color 0.35s, box-shadow 0.35s",
+              willChange: "transform, opacity",
+              isolation: "isolate",
+              transition: "background-color 0.3s, border-color 0.3s, box-shadow 0.3s",
             }}
           >
             {/* Sliding active indicator */}
@@ -195,9 +202,10 @@ export function BottomNav() {
                   background:
                     "linear-gradient(135deg, #6C5CE7 0%, #4F7FFF 45%, #00B4D8 100%)",
                   boxShadow:
-                    "0 4px 20px -4px rgba(79,127,255,0.65), 0 0 0 1px rgba(255,255,255,0.15) inset",
+                    "0 4px 20px -4px rgba(79,127,255,0.65), 0 0 0 1px rgba(255,255,255,0.18) inset",
                   zIndex: 0,
                   pointerEvents: "none",
+                  willChange: "transform",
                 }}
               />
             )}
