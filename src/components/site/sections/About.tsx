@@ -4,8 +4,7 @@ import { trustCards, BRAND } from "@/lib/site-data";
 export function About() {
   return (
     <section id="about" className="relative px-5 py-24">
-      {/* ── top row: text + image side by side ─────────────────────────── */}
-      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-2 md:items-center">
+      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-2 md:items-start">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -28,45 +27,7 @@ export function About() {
           </p>
         </motion.div>
 
-        {/* Marketing image — curved square card */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.93, y: 24 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-          className="relative mx-auto w-full max-w-sm md:max-w-full"
-        >
-          {/* Outer glow ring */}
-          <div
-            className="absolute inset-0 rounded-[2rem]"
-            style={{
-              background: "linear-gradient(135deg, #6C5CE7 0%, #4F7FFF 45%, #00B4D8 100%)",
-              padding: 2,
-              borderRadius: "2rem",
-              zIndex: 0,
-            }}
-          />
-          <div
-            className="relative overflow-hidden"
-            style={{
-              borderRadius: "1.875rem",   /* 30px — just inside the 2px gradient border */
-              boxShadow: "0 24px 64px -12px rgba(79,127,255,0.35), 0 4px 20px rgba(0,0,0,0.20)",
-              zIndex: 1,
-            }}
-          >
-            <img
-              src="/images/about-marketing.jpg"
-              alt="Marketing se hi business ka future hai"
-              className="w-full h-auto block"
-              style={{ display: "block", maxHeight: 420, objectFit: "cover" }}
-              loading="lazy"
-            />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ── bottom row: cards ───────────────────────────────────────────── */}
-      <div className="mx-auto mt-10 max-w-6xl grid gap-4">
+        <div className="grid gap-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -127,6 +88,7 @@ export function About() {
             </p>
           </motion.div>
         </div>
+      </div>
     </section>
   );
 }

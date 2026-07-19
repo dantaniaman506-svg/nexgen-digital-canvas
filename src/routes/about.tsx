@@ -62,6 +62,47 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* ── Marketing image card ────────────────────────────────────────── */}
+      <section className="relative px-5 pb-4 pt-2">
+        <div className="mx-auto max-w-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.93, y: 28 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.65 }}
+            className="relative"
+          >
+            {/* Gradient border ring */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "1.75rem",
+                padding: 2,
+                background: "linear-gradient(135deg, #6C5CE7 0%, #4F7FFF 45%, #00B4D8 100%)",
+                zIndex: 0,
+              }}
+            />
+            <div
+              className="relative overflow-hidden"
+              style={{
+                borderRadius: "1.625rem",
+                boxShadow:
+                  "0 24px 64px -12px rgba(79,127,255,0.35), 0 4px 20px rgba(0,0,0,0.22)",
+                zIndex: 1,
+              }}
+            >
+              <img
+                src="/images/about-marketing.jpg"
+                alt="Marketing Nahi To Business Ka Kya Future Hai Re Baba"
+                className="w-full h-auto block"
+                loading="eager"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="relative px-5 py-20">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
           <motion.div
