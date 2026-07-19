@@ -130,6 +130,7 @@ export const services: Service[] = [
     title: "Shoot Management",
     desc: "Pre-production, photography, videography & post-production.",
     icon: Camera,
+    image: "/images/service-shoot-management.jpg",
     intro:
       "In today's dynamic digital marketing landscape, compelling visuals are essential. Our Shoot Management services are designed to elevate your brand's visual storytelling.",
     sectionTitle: "Capturing the Essence of",
@@ -185,6 +186,7 @@ export const services: Service[] = [
     title: "Content Creation",
     desc: "Blogs, posts, newsletters and copy that convert.",
     icon: PenTool,
+    image: "/images/service-content-creation.jpg",
     intro:
       "In the dynamic world of digital marketing, content reigns supreme. Our specialized content creation services are meticulously crafted to enhance your brand's presence, captivate your audience, and deliver impactful outcomes.",
     sectionTitle: "Elevate Your Brand with",
@@ -205,6 +207,7 @@ export const services: Service[] = [
     title: "Branding",
     desc: "Identities, guidelines and stories that resonate.",
     icon: Sparkle,
+    image: "/images/service-branding.jpg",
     intro:
       "We understand that a powerful brand is more than just a logo or tagline — it's the essence of your business. Our branding services capture your unique identity and communicate it effectively to your audience.",
     sectionTitle: "Crafting Unique Identities",
@@ -225,6 +228,7 @@ export const services: Service[] = [
     title: "Video Editing",
     desc: "Reels, ads, corporate & social videos that engage.",
     icon: Film,
+    image: "/images/service-video-editing.jpg",
     intro:
       "We understand the power of video content in today's digital landscape. Our Video Editing services are crafted to transform raw footage into captivating visual stories that engage, inspire, and resonate with your audience.",
     sectionTitle: "Transforming Concepts into",
@@ -245,6 +249,7 @@ export const services: Service[] = [
     title: "Influencer Marketing",
     desc: "Creators who move your audience — end-to-end campaigns.",
     icon: Users,
+    image: "/images/service-influencer-marketing.jpg",
     intro:
       "In today's digital landscape, influencer marketing has emerged as a powerful strategy to amplify your brand's message and engage with a broader audience.",
     sectionTitle: "Amplify Your",
@@ -265,6 +270,7 @@ export const services: Service[] = [
     title: "Logo Design",
     desc: "Distinctive marks — the cornerstone of your identity.",
     icon: Palette,
+    image: "/images/service-logo-design.jpg",
     intro:
       "We know your logo is more than a visual mark — it's the cornerstone of your brand identity. Our expert team of designers excels in creating logos that capture your brand's essence and leave a lasting impression.",
     sectionTitle: "Crafting Identities, Elevating",
@@ -285,6 +291,7 @@ export const services: Service[] = [
     title: "Offline Marketing",
     desc: "Print, outdoor, events and BTL that complements digital.",
     icon: Megaphone,
+    image: "/images/service-offline-marketing.jpg",
     intro:
       "We specialize in crafting impactful offline marketing strategies that complement your digital efforts, ensuring your brand stands out in the physical realm.",
     sectionTitle: "Elevate Your Brand with",
@@ -305,6 +312,7 @@ export const services: Service[] = [
     title: "Amazon Marketplace Growth",
     desc: "Listings, ads, A+ content and strategy for scale.",
     icon: ShoppingCart,
+    image: "/images/service-amazon-marketplace.jpg",
     intro:
       "We specialize in empowering businesses to thrive on the Amazon Marketplace. With our tailored strategies and deep industry expertise, we unlock your brand's potential and drive sustainable growth.",
     sectionTitle: "Unlock Growth on",
@@ -325,6 +333,7 @@ export const services: Service[] = [
     title: "Performance Marketing",
     desc: "Google & Meta ads engineered for measurable ROI.",
     icon: BarChart3,
+    image: "/images/service-performance-marketing.jpg",
     intro:
       "We understand that achieving your business goals requires more than just visibility — it demands measurable results. Our Performance Marketing services are meticulously crafted to drive tangible outcomes and maximize your ROI.",
     sectionTitle: "Driving Measurable Results",
