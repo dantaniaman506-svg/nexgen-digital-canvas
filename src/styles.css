@@ -179,8 +179,8 @@
   }
   html {
     font-family: var(--font-sans);
-    scroll-behavior: smooth;
     overflow-x: clip; /* clip on html prevents the viewport from being wider than screen */
+    /* scroll-behavior intentionally omitted — programmatic scrolls pass behavior explicitly */
   }
   body {
     background-color: var(--color-background);
@@ -317,9 +317,26 @@
 
 /* ─── Global smoothness ──────────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent; /* remove grey flash on mobile tap */
   touch-action: manipulation;
+}
+
+/* ─── View Transition — theme toggle circular reveal ─────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    /* Keep the old theme frozen while new theme expands over it */
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-new(root) {
+    animation: 0.48s cubic-bezier(0.22, 1, 0.36, 1) both vt-theme-circle;
+    mix-blend-mode: normal;
+  }
+}
+
+@keyframes vt-theme-circle {
+  from { clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%)); }
+  to   { clip-path: circle(var(--vt-r, 2000px) at var(--vt-x, 50%) var(--vt-y, 50%)); }
 }
 
 * {

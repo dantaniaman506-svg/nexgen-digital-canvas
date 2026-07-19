@@ -5,33 +5,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { hapticLight } from "@/lib/haptic";
 
 const items = [
-  { to: "/", label: "Home", icon: House, sectionId: "hero" },
-  { to: "/about", label: "About", icon: Info, sectionId: "about" },
-  { to: "/services", label: "Services", icon: Layers, sectionId: "services" },
-  { to: "/#why", label: "Why Us", icon: Award, sectionId: "why" },
-  { to: "/#industries", label: "Industries", icon: Briefcase, sectionId: "industries" },
-  { to: "/contact", label: "Contact", icon: Send, sectionId: "contact" },
+  { to: "/",            label: "Home",       icon: House,    sectionId: "hero"       },
+  { to: "/about",       label: "About",      icon: Info,     sectionId: "about"      },
+  { to: "/services",    label: "Services",   icon: Layers,   sectionId: "services"   },
+  { to: "/#why",        label: "Why Us",     icon: Award,    sectionId: "why"        },
+  { to: "/#industries", label: "Industries", icon: Briefcase,sectionId: "industries" },
+  { to: "/contact",     label: "Contact",    icon: Send,     sectionId: "contact"    },
 ];
 
 const ITEM_SIZE = 44;
-const ITEM_GAP = 4;
-const STEP = ITEM_SIZE + ITEM_GAP;
+const ITEM_GAP  = 4;
+const STEP      = ITEM_SIZE + ITEM_GAP;
 
-/** Returns which section is most prominent in the viewport right now */
+/** Which section is closest to the viewport midpoint right now */
 function detectCurrentSection(): string {
-  const viewportMid = window.scrollY + window.innerHeight * 0.45;
-  let best = "hero";
-  let bestDist = Infinity;
-
+  const mid = window.scrollY + window.innerHeight * 0.45;
+  let best = "hero", bestDist = Infinity;
   for (const item of items) {
     const el = document.getElementById(item.sectionId);
     if (!el) continue;
-    const top = el.offsetTop;
-    const dist = Math.abs(top - viewportMid);
-    if (dist < bestDist) {
-      bestDist = dist;
-      best = item.sectionId;
-    }
+    const dist = Math.abs(el.offsetTop - mid);
+    if (dist < bestDist) { bestDist = dist; best = item.sectionId; }
   }
   return best;
 }
@@ -44,23 +38,28 @@ function sectionForPath(pathname: string): string | null {
   return match ? match.sectionId : null;
 }
 
+/** Is this link a same-page navigation that doesn't need a route change? */
+function isSamePage(to: string, isHome: boolean) {
+  return to === "/" || (to.startsWith("/#") && isHome);
+}
+
 export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isHome = pathname === "/";
+  const isHome   = pathname === "/";
 
   const [activeSection, setActiveSection] = useState<string>(() => {
     if (isHome) return "hero";
     return sectionForPath(pathname) ?? "hero";
   });
   const [visible, setVisible] = useState(false);
-  const [isDark, setIsDark] = useState(
+  const [isDark, setIsDark]   = useState(
     () => document.documentElement.classList.contains("dark"),
   );
 
-  // When true, scroll-spy won't override a manually clicked section
+  // When true, scroll-spy waits before overriding a manual click
   const pauseUntil = useRef<number>(0);
 
-  /* Delayed mount — slides up after page load */
+  /* Delayed mount */
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 500);
     return () => clearTimeout(t);
@@ -68,57 +67,71 @@ export function BottomNav() {
 
   /* Theme sync */
   useEffect(() => {
-    const el = document.documentElement;
-    const obs = new MutationObserver(() =>
-      setIsDark(el.classList.contains("dark")),
-    );
+    const el  = document.documentElement;
+    const obs = new MutationObserver(() => setIsDark(el.classList.contains("dark")));
     obs.observe(el, { attributes: true, attributeFilter: ["class"] });
     return () => obs.disconnect();
   }, []);
 
-  /* On route change to a non-home page, lock the indicator to that page's section */
+  /* ── Route-change handler ────────────────────────────────────────────
+     Cross-page navigation: set circle AFTER the new page is mounted,
+     not in the click handler.  Same-page (home scroll): scroll-spy handles it.
+  */
   useEffect(() => {
     if (!isHome) {
       const s = sectionForPath(pathname);
       if (s) setActiveSection(s);
     }
-    // On home, scroll-spy will take over — don't reset here
   }, [pathname, isHome]);
 
-  /* Scroll-spy — home page only, using scroll event for reliability */
+  /* ── Hash-scroll after arriving on home from another page ────────────
+     When navigating from /about → /#why the browser jumps instantly
+     (scroll-behavior removed from CSS).  We also need the scroll-spy
+     to fire once after the hash scroll completes so the circle lands
+     on the right icon.
+  */
   useEffect(() => {
     if (!isHome) return;
+    // Small delay lets the browser complete its hash-scroll first
+    const t = setTimeout(() => {
+      setActiveSection(detectCurrentSection());
+    }, 60);
+    return () => clearTimeout(t);
+  }, [isHome]);
 
+  /* ── Scroll-spy (home only) ──────────────────────────────────────────*/
+  useEffect(() => {
+    if (!isHome) return;
     const onScroll = () => {
       if (Date.now() < pauseUntil.current) return;
       setActiveSection(detectCurrentSection());
     };
-
-    // Run once immediately so initial position is correct
-    onScroll();
-
+    onScroll(); // run once on mount
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHome]);
 
+  /* ── Click handler ───────────────────────────────────────────────────
+     Same-page links  → move circle immediately + instant scroll
+     Cross-page links → let the route-change effect move the circle
+                        after navigation completes (circle follows page)
+  */
   const handleClick = useCallback(
     (sectionId: string, to: string) => {
-      // Immediately update the indicator — never let a later effect override it
       hapticLight();
-      setActiveSection(sectionId);
-      // Pause scroll-spy for 1.2 s so the scroll animation doesn't fight us
       pauseUntil.current = Date.now() + 1200;
 
-      if (isHome) {
+      if (isSamePage(to, isHome)) {
+        // Immediate circle + instant jump
+        setActiveSection(sectionId);
         if (to === "/") {
-          // Home icon — jump to top instantly
           window.scrollTo({ top: 0, behavior: "instant" });
         } else if (to.startsWith("/#")) {
-          const id = to.slice(2);
-          const el = document.getElementById(id);
+          const el = document.getElementById(to.slice(2));
           if (el) el.scrollIntoView({ behavior: "instant" });
         }
       }
+      // Cross-page: do nothing here — route change effect handles circle
     },
     [isHome],
   );
@@ -171,12 +184,7 @@ export function BottomNav() {
             {activeIndex >= 0 && (
               <motion.span
                 animate={{ x: activeIndex * STEP }}
-                transition={{
-                  type: "spring",
-                  stiffness: 480,
-                  damping: 36,
-                  mass: 0.7,
-                }}
+                transition={{ type: "spring", stiffness: 480, damping: 36, mass: 0.7 }}
                 style={{
                   position: "absolute",
                   left: 8,
@@ -195,7 +203,7 @@ export function BottomNav() {
             )}
 
             {items.map((item) => {
-              const Icon = item.icon;
+              const Icon     = item.icon;
               const isActive = activeSection === item.sectionId;
 
               return (

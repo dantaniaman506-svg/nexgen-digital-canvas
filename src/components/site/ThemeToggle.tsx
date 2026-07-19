@@ -37,11 +37,37 @@ export function ThemeToggle() {
     return () => obs.disconnect();
   }, []);
 
-  const toggle = () => {
+  const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     const next = !isDark;
+    if (next) soundDarkMode(); else soundLightMode();
+
+    // View Transitions API — circular reveal expanding from button center
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      const btn = e.currentTarget;
+      const rect = btn.getBoundingClientRect();
+      const x = Math.round(rect.left + rect.width / 2);
+      const y = Math.round(rect.top + rect.height / 2);
+      const r = Math.ceil(
+        Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y),
+        ),
+      );
+      const root = document.documentElement;
+      root.style.setProperty("--vt-x", `${x}px`);
+      root.style.setProperty("--vt-y", `${y}px`);
+      root.style.setProperty("--vt-r", `${r}px`);
+      // @ts-expect-error — startViewTransition is not yet in TS lib
+      document.startViewTransition(() => {
+        applyTheme(next);
+        setIsDark(next);
+      });
+      return;
+    }
+
+    // Fallback for browsers without View Transitions
     applyTheme(next);
     setIsDark(next);
-    if (next) soundDarkMode(); else soundLightMode();
   };
 
   return (
