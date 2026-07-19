@@ -31,7 +31,8 @@ function ServiceDetail() {
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
-    <>
+    /* overflow-x: clip keeps every section from bleeding past the viewport */
+    <div style={{ overflowX: "clip" }}>
       <section className="relative px-5 pt-32 pb-14 overflow-hidden">
         <GradientBlobs />
         <div className="relative mx-auto max-w-4xl text-center">
@@ -210,7 +211,8 @@ function ServiceDetail() {
           <h3 className="font-display text-xl font-extrabold">
             Explore more <span className="text-brand-gradient">services</span>
           </h3>
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          {/* md:grid-cols-3 — 768px threshold, safe for all phones */}
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
             {related.map((r) => {
               const RIcon = r.icon;
               return (
@@ -218,14 +220,14 @@ function ServiceDetail() {
                   key={r.slug}
                   to="/services/$slug"
                   params={{ slug: r.slug }}
-                  className="glass group flex items-center gap-3 rounded-2xl p-4 hover:-translate-y-0.5 transition-transform"
+                  className="glass group flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl p-4 transition-transform hover:-translate-y-0.5"
                 >
-                  <div className="bg-brand-gradient flex h-10 w-10 items-center justify-center rounded-xl">
+                  <div className="bg-brand-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
                     <RIcon className="h-5 w-5 text-white" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-display font-semibold truncate">{r.title}</p>
-                    <p className="text-xs text-muted-foreground truncate">{r.desc}</p>
+                    <p className="truncate text-xs text-muted-foreground">{r.desc}</p>
                   </div>
                 </Link>
               );
@@ -233,6 +235,6 @@ function ServiceDetail() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
