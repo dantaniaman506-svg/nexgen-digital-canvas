@@ -58,6 +58,7 @@ export type Service = {
   title: string;
   desc: string;
   icon: LucideIcon;
+  image?: string; // optional hero image path (public/)
   intro: string;
   sectionTitle: string;
   sectionTitleAccent: string;
@@ -73,6 +74,7 @@ export const services: Service[] = [
     title: "Website Development",
     desc: "Fast, premium, custom-built websites that convert.",
     icon: Code2,
+    image: "/images/service-web-dev.jpg",
     intro:
       "We specialize in expert website development services tailored to your business needs. Whether you need a PHP, HTML, or WordPress website, we excel in creating high-quality, custom-built websites that enhance your online presence and drive results.",
     sectionTitle: "Crafting Custom Solutions for",
@@ -98,6 +100,7 @@ export const services: Service[] = [
     title: "Social Media Marketing",
     desc: "Instagram, Facebook, LinkedIn management, content & paid ads.",
     icon: Instagram,
+    image: "/images/service-social-media.jpg",
     intro:
       "We understand the crucial role of social media in today's digital landscape. Social platforms like Facebook, Instagram, Twitter, and LinkedIn are powerful tools for shaping brand identity, engaging audiences, and driving business growth.",
     sectionTitle: "Expert social media",
@@ -156,6 +159,7 @@ export const services: Service[] = [
     title: "Google SEO",
     desc: "Keyword research, on/off-page, technical & local SEO.",
     icon: Search,
+    image: "/images/service-seo.jpg",
     intro:
       "We employ a strategic approach to SEO that encompasses thorough keyword research, meticulous on-page optimization, technical SEO audits, and content strategy refinement.",
     sectionTitle: "Get Found on",

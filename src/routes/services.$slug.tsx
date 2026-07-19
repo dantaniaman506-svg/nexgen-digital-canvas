@@ -64,7 +64,31 @@ function ServiceDetail() {
       </section>
 
       <section className="relative px-5 py-16">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl">
+          {/* Service hero image — shown only when the service has one */}
+          {service.image && (
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65 }}
+              className="mb-12 overflow-hidden rounded-3xl"
+              style={{
+                boxShadow:
+                  "0 20px 60px -12px rgba(79,127,255,0.28), 0 4px 24px rgba(0,0,0,0.18)",
+                maxHeight: 420,
+              }}
+            >
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover"
+                style={{ maxHeight: 420 }}
+                loading="lazy"
+              />
+            </motion.div>
+          )}
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
