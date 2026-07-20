@@ -92,18 +92,17 @@ function ServiceDetail() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.65 }}
-              className="mb-12 overflow-hidden rounded-3xl"
+              className="mb-12 mx-auto overflow-hidden rounded-3xl"
               style={{
                 boxShadow:
                   "0 20px 60px -12px rgba(79,127,255,0.28), 0 4px 24px rgba(0,0,0,0.18)",
-                maxHeight: 420,
+                maxWidth: 560,
               }}
             >
               <img
                 src={service.image}
                 alt={service.title}
-                className="w-full h-full object-cover"
-                style={{ maxHeight: 420 }}
+                className="w-full h-auto block"
                 loading="lazy"
               />
             </motion.div>
