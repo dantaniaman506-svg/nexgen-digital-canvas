@@ -70,7 +70,9 @@ function AboutPage() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.65 }}
-            className="relative"
+            whileHover={{ scale: 1.04, y: -6, boxShadow: "0 24px 64px -8px oklch(0.64 0.20 248 / 0.42), 0 0 0 2px oklch(0.64 0.20 248 / 0.22)", transition: { type: "spring", stiffness: 450, damping: 22 } }}
+            whileTap={{ scale: 1.07, y: -8, boxShadow: "0 30px 72px -6px oklch(0.64 0.20 248 / 0.58), 0 0 0 2.5px oklch(0.86 0.13 225 / 0.38)", transition: { type: "spring", stiffness: 550, damping: 20 } }}
+            className="relative cursor-pointer"
           >
             {/* Gradient border ring */}
             <div
@@ -176,7 +178,9 @@ function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ delay: i * 0.06 }}
-                  className="glass rounded-2xl p-6 flex gap-4 hover:brand-glow-shadow transition-shadow"
+                  whileHover={{ scale: 1.04, y: -5, boxShadow: "0 20px 56px -8px oklch(0.64 0.20 248 / 0.38), 0 0 0 1.5px oklch(0.64 0.20 248 / 0.22)", transition: { type: "spring", stiffness: 500, damping: 22 } }}
+                  whileTap={{ scale: 1.07, y: -7, boxShadow: "0 26px 64px -6px oklch(0.64 0.20 248 / 0.55), 0 0 0 2px oklch(0.86 0.13 225 / 0.35)", transition: { type: "spring", stiffness: 600, damping: 20 } }}
+                  className="glass cursor-pointer rounded-2xl p-6 flex gap-4"
                 >
                   <div className="bg-brand-gradient flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
                     <Icon className="h-5 w-5 text-white" />
