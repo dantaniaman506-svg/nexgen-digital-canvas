@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { reviews } from "@/lib/site-data";
@@ -41,9 +42,17 @@ function Card({ r }: { r: (typeof reviews)[number] }) {
 export function ReviewsMarquee() {
   const row1 = [...reviews, ...reviews];
   const row2 = [...reviews.slice().reverse(), ...reviews.slice().reverse()];
+  const [slow, setSlow] = useState(false);
 
   return (
-    <section className="marquee-pause relative overflow-hidden py-16">
+    <section
+      className="relative overflow-hidden py-16"
+      onMouseEnter={() => setSlow(true)}
+      onMouseLeave={() => setSlow(false)}
+      onTouchStart={() => setSlow(true)}
+      onTouchEnd={() => setSlow(false)}
+      onTouchCancel={() => setSlow(false)}
+    >
       <div className="mx-auto max-w-6xl px-5 mb-8 text-center">
         <p className="text-brand-blue font-display text-sm font-semibold tracking-widest uppercase">
           Loved by clients
@@ -53,10 +62,16 @@ export function ReviewsMarquee() {
         </h2>
       </div>
 
-      <div className="flex w-max animate-marquee-left">
+      <div
+        className="flex w-max animate-marquee-left"
+        style={{ animationDuration: slow ? "120s" : "40s" }}
+      >
         {row1.map((r, i) => <Card key={`a-${i}`} r={r} />)}
       </div>
-      <div className="mt-4 flex w-max animate-marquee-right">
+      <div
+        className="mt-4 flex w-max animate-marquee-right"
+        style={{ animationDuration: slow ? "120s" : "40s" }}
+      >
         {row2.map((r, i) => <Card key={`b-${i}`} r={r} />)}
       </div>
     </section>

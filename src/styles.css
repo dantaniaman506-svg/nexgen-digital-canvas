@@ -299,10 +299,6 @@
 .animate-glow-pulse {
   animation: glow-pulse 3s ease-in-out infinite;
 }
-.marquee-pause:hover .animate-marquee-left,
-.marquee-pause:hover .animate-marquee-right {
-  animation-play-state: paused;
-}
 
 /* ─── Reduced motion ──────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
