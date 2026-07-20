@@ -94,7 +94,7 @@ function AboutPage() {
             >
               <img
                 src="/images/about-marketing.jpg"
-                alt="Marketing Nahi To Business Ka Kya Future Hai Re Baba"
+                alt="Nexgen Digital Marketing – Website & WordPress Solutions"
                 className="w-full h-auto block"
                 loading="eager"
               />
