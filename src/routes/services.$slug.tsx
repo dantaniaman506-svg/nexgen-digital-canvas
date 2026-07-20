@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Sparkles, Zap } from "lucide-react";
 import { GradientBlobs } from "@/components/site/GradientBlobs";
 import { getServiceBySlug, services, type Service } from "@/lib/site-data";
 
@@ -61,6 +61,25 @@ function ServiceDetail() {
           >
             {service.intro}
           </motion.p>
+
+          {/* ── Primary CTA ─────────────────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
+          >
+            <Link
+              to="/contact"
+              search={{ service: service.title }}
+              className="bg-brand-gradient brand-glow-shadow group relative inline-flex items-center gap-3 overflow-hidden rounded-full px-8 py-4 font-display text-base font-bold text-white transition-transform hover:scale-[1.03] active:scale-[0.97]"
+            >
+              <Zap className="h-5 w-5 shrink-0" />
+              Get This Service
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <p className="text-sm text-muted-foreground">Free consultation · No commitment</p>
+          </motion.div>
         </div>
       </section>
 
@@ -199,9 +218,12 @@ function ServiceDetail() {
           </p>
           <Link
             to="/contact"
-            className="bg-brand-gradient brand-glow-shadow mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-white"
+            search={{ service: service.title }}
+            className="bg-brand-gradient brand-glow-shadow group mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-white transition-transform hover:scale-[1.03] active:scale-[0.97]"
           >
-            Get in touch <ArrowRight className="h-4 w-4" />
+            <Zap className="h-4 w-4" />
+            Get This Service
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
       </section>

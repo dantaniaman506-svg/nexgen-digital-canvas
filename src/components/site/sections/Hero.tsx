@@ -25,12 +25,11 @@ export function Hero() {
           zIndex: 2,
           pointerEvents: "none",
           backgroundImage: `
-            linear-gradient(rgba(99,140,255,0.07) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99,140,255,0.07) 1px, transparent 1px),
-            radial-gradient(circle, rgba(99,140,255,0.18) 1px, transparent 1px)
+            linear-gradient(rgba(99,140,255,0.10) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99,140,255,0.10) 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px, 40px 40px, 40px 40px",
-          backgroundPosition: "0 0, 0 0, 20px 20px",
+          backgroundSize: "40px 40px",
+          backgroundPosition: "0 0",
         }}
       />
 

@@ -48,13 +48,13 @@ function formatPhone(raw: string) {
   return raw.replace(/[^\d +\-]/g, "");
 }
 
-export function ContactForm({ dense = false }: { dense?: boolean }) {
+export function ContactForm({ dense = false, initialService = "" }: { dense?: boolean; initialService?: string }) {
   const [values, setValues] = useState({
     name: "",
     business: "",
     industry: "",
     industryCustom: "",
-    service: "",
+    service: initialService,
     phone: "",
     message: "",
   });

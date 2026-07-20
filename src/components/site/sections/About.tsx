@@ -33,8 +33,8 @@ export function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            whileHover={{ scale: 1.025, y: -4, boxShadow: "0 20px 56px -8px oklch(0.64 0.20 248 / 0.35), 0 0 0 1.5px oklch(0.64 0.20 248 / 0.20)", transition: { type: "spring", stiffness: 450, damping: 22 } }}
-            whileTap={{ scale: 1.04, y: -5, boxShadow: "0 26px 64px -6px oklch(0.64 0.20 248 / 0.52), 0 0 0 2px oklch(0.86 0.13 225 / 0.32)", transition: { type: "spring", stiffness: 550, damping: 20 } }}
+            whileHover={{ scale: 1.025, y: -3, transition: { type: "spring", stiffness: 450, damping: 22 } }}
+            whileTap={{ scale: 1.04, y: -4, transition: { type: "spring", stiffness: 550, damping: 20 } }}
             className="glass cursor-pointer rounded-3xl p-6 sm:p-8"
           >
             {trustCards.map((t, i) => {
@@ -69,8 +69,8 @@ export function About() {
               { v: "50+", l: "Brands Served" },
             ].map((s) => (
               <motion.div key={s.l}
-                whileHover={{ scale: 1.07, y: -5, boxShadow: "0 16px 48px -8px oklch(0.64 0.20 248 / 0.38), 0 0 0 1.5px oklch(0.64 0.20 248 / 0.22)", transition: { type: "spring", stiffness: 500, damping: 22 } }}
-                whileTap={{ scale: 1.10, y: -7, boxShadow: "0 22px 56px -6px oklch(0.64 0.20 248 / 0.55), 0 0 0 2px oklch(0.86 0.13 225 / 0.35)", transition: { type: "spring", stiffness: 600, damping: 20 } }}
+                whileHover={{ scale: 1.06, y: -4, transition: { type: "spring", stiffness: 500, damping: 22 } }}
+                whileTap={{ scale: 1.09, y: -5, transition: { type: "spring", stiffness: 600, damping: 20 } }}
                 className="glass cursor-pointer rounded-2xl p-4 text-center">
                 <p className="text-brand-gradient font-display text-3xl font-extrabold">{s.v}</p>
                 <p className="mt-1 text-[11px] uppercase tracking-widest text-muted-foreground">
@@ -85,8 +85,8 @@ export function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            whileHover={{ scale: 1.03, y: -4, boxShadow: "0 16px 48px -8px oklch(0.64 0.20 248 / 0.35), 0 0 0 1.5px oklch(0.64 0.20 248 / 0.20)", transition: { type: "spring", stiffness: 500, damping: 22 } }}
-            whileTap={{ scale: 1.05, y: -5, boxShadow: "0 22px 56px -6px oklch(0.64 0.20 248 / 0.52), 0 0 0 2px oklch(0.86 0.13 225 / 0.32)", transition: { type: "spring", stiffness: 600, damping: 20 } }}
+            whileHover={{ scale: 1.03, y: -3, transition: { type: "spring", stiffness: 500, damping: 22 } }}
+            whileTap={{ scale: 1.05, y: -4, transition: { type: "spring", stiffness: 600, damping: 20 } }}
             className="glass cursor-pointer rounded-2xl p-5"
           >
             <p className="text-brand-blue font-display text-xs font-semibold tracking-widest uppercase">Our Promise</p>

@@ -6,10 +6,14 @@ import { ContactForm } from "@/components/site/ContactForm";
 import { CONTACT } from "@/lib/site-data";
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    service: typeof search.service === "string" ? search.service : "",
+  }),
   component: ContactPage,
 });
 
 function ContactPage() {
+  const { service: preService } = Route.useSearch();
   return (
     <>
       <section className="relative px-5 pt-32 pb-14 overflow-hidden">
@@ -50,7 +54,7 @@ function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
           >
-            <ContactForm />
+            <ContactForm initialService={preService} />
           </motion.div>
 
           <motion.div

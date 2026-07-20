@@ -3,9 +3,9 @@ import { Star } from "lucide-react";
 import { reviews } from "@/lib/site-data";
 
 const popVariants = {
-  rest: { scale: 1, y: 0 },
-  hover: { scale: 1.045, y: -5, boxShadow: "0 20px 56px -8px oklch(0.64 0.20 248 / 0.38), 0 0 0 1.5px oklch(0.64 0.20 248 / 0.22)" },
-  tap:   { scale: 1.07,  y: -7, boxShadow: "0 26px 64px -6px oklch(0.64 0.20 248 / 0.55), 0 0 0 2px   oklch(0.86 0.13 225 / 0.35)" },
+  rest:  { scale: 1,    y: 0 },
+  hover: { scale: 1.04, y: -4 },
+  tap:   { scale: 1.06, y: -5 },
 };
 const popTransition = { type: "spring" as const, stiffness: 500, damping: 22 };
 

@@ -27,8 +27,8 @@ export function Industries() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                whileHover={{ scale: 1.06, y: -6, boxShadow: "0 20px 56px -8px oklch(0.64 0.20 248 / 0.38), 0 0 0 1.5px oklch(0.64 0.20 248 / 0.22)", transition: { type: "spring", stiffness: 500, damping: 22 } }}
-                whileTap={{ scale: 1.09, y: -8, boxShadow: "0 26px 64px -6px oklch(0.64 0.20 248 / 0.55), 0 0 0 2px oklch(0.86 0.13 225 / 0.35)", transition: { type: "spring", stiffness: 600, damping: 20 } }}
+                whileHover={{ scale: 1.06, y: -5, transition: { type: "spring", stiffness: 500, damping: 22 } }}
+                whileTap={{ scale: 1.08, y: -6, transition: { type: "spring", stiffness: 600, damping: 20 } }}
                 className="glass group flex cursor-pointer flex-col items-center gap-3 rounded-2xl p-5 text-center"
               >
                 <div
