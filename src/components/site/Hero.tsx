@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, Phone, ShieldCheck, ChevronDown } from "lucide-react";
 import { CONTACT, BRAND } from "@/lib/site-data";
+import { playGrowthSound } from "@/lib/sounds";
 import { GradientBlobs } from "../GradientBlobs";
 import {
   DropdownMenu,
@@ -92,6 +93,7 @@ export function Hero() {
         >
           <a
             href="#contact"
+            onClick={() => playGrowthSound()}
             className="bg-brand-gradient brand-glow-shadow group inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-white transition-all hover:scale-[1.03] hover:shadow-2xl"
           >
             Get a Free Growth Plan

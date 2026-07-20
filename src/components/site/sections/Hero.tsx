@@ -3,6 +3,7 @@ import { Sparkles, ArrowRight, Phone, ShieldCheck, ChevronDown } from "lucide-re
 import { CONTACT, BRAND } from "@/lib/site-data";
 import { GradientBlobs } from "../GradientBlobs";
 import { hapticMedium, hapticLight } from "@/lib/haptic";
+import { playGrowthSound } from "@/lib/sounds";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,7 +74,7 @@ export function Hero() {
         >
           <a
             href="#contact"
-            onClick={() => hapticMedium()}
+            onClick={() => { hapticMedium(); playGrowthSound(); }}
             className="bg-brand-gradient brand-glow-shadow group inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-display font-semibold text-white transition-transform hover:scale-[1.02]"
           >
             Get a Free Growth Plan
