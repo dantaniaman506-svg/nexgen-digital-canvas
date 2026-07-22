@@ -103,18 +103,28 @@ function DarkImage({ visible }: { visible: boolean }) {
   );
 }
 
-/** Light theme background — uses uploaded landscape image. */
+/** Light theme background — portrait on mobile, landscape on desktop. */
 function LightImage({ visible }: { visible: boolean }) {
   return (
     <div
       className="absolute inset-0 transition-opacity duration-700"
       style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
+      {/* Mobile image (portrait) — hidden on lg+ */}
+      <img
+        src="/images/light-bg-mobile.png"
+        alt=""
+        aria-hidden="true"
+        className="block lg:hidden h-full w-full object-cover object-center"
+        style={{ position: "absolute", inset: 0 }}
+        fetchPriority="high"
+      />
+      {/* Desktop image (landscape) — hidden below lg */}
       <img
         src="/images/light-bg-desktop.png"
         alt=""
         aria-hidden="true"
-        className="h-full w-full object-cover object-center"
+        className="hidden lg:block h-full w-full object-cover object-center"
         style={{ position: "absolute", inset: 0 }}
         fetchPriority="high"
       />
