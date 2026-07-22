@@ -62,8 +62,8 @@ export function FloatingLogo() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 44,
-              height: 44,
+              width: 52,
+              height: 52,
               borderRadius: 9999,
               overflow: "hidden",
               flexShrink: 0,
@@ -74,11 +74,11 @@ export function FloatingLogo() {
             <img
               src={isDark ? "/logos/ndm-dark.png" : "/logos/ndm-light.png"}
               alt="NDM logo"
-              width={44}
-              height={44}
+              width={52}
+              height={52}
               style={{
-                width: 44,
-                height: 44,
+                width: 52,
+                height: 52,
                 objectFit: "contain",
                 display: "block",
               }}
@@ -92,7 +92,7 @@ export function FloatingLogo() {
               className="text-brand-gradient"
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: 15,
+                fontSize: 17,
                 fontWeight: 800,
                 letterSpacing: "-0.02em",
               }}

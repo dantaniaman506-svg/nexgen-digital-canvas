@@ -41,10 +41,10 @@ export function Hero() {
           zIndex: 2,
           pointerEvents: "none",
           backgroundImage: `
-            linear-gradient(rgba(80,100,180,0.10) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(80,100,180,0.10) 1px, transparent 1px)
+            linear-gradient(rgba(90,110,200,0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(90,110,200,0.08) 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px",
+          backgroundSize: "64px 64px",
           backgroundPosition: "0 0",
         }}
       />

@@ -82,8 +82,8 @@ export function DesktopNav() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
             borderRadius: 9999,
             overflow: "hidden",
             background: isDark ? "#000" : "transparent",
@@ -94,15 +94,15 @@ export function DesktopNav() {
           <img
             src={isDark ? "/logos/ndm-dark.png" : "/logos/ndm-light.png"}
             alt="NDM"
-            width={40}
-            height={40}
-            style={{ width: 40, height: 40, objectFit: "contain", display: "block" }}
+            width={48}
+            height={48}
+            style={{ width: 48, height: 48, objectFit: "contain", display: "block" }}
             draggable={false}
           />
         </span>
         <span
           className="text-brand-gradient font-display font-bold"
-          style={{ fontSize: 16, letterSpacing: "-0.02em" }}
+          style={{ fontSize: 18, letterSpacing: "-0.02em" }}
         >
           {BRAND.name}
         </span>
