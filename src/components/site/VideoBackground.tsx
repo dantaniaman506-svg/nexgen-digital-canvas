@@ -103,47 +103,34 @@ function DarkImage({ visible }: { visible: boolean }) {
   );
 }
 
-function LightVideo({ visible }: { visible: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  useKeepAlive(ref, visible, 1);
-
+/** Light theme background — uses uploaded landscape image. */
+function LightImage({ visible }: { visible: boolean }) {
   return (
     <div
       className="absolute inset-0 transition-opacity duration-700"
       style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
-      <video
-        ref={ref}
-        loop
-        muted
-        playsInline
-        autoPlay
-        preload="auto"
-        disablePictureInPicture
-        className="h-full w-full object-cover"
-        src="/videos/hero-light.mp4"
-        {...({ "webkit-playsinline": "true", "x-webkit-airplay": "deny" } as object)}
+      <img
+        src="/images/light-bg-desktop.png"
+        alt=""
+        aria-hidden="true"
+        className="h-full w-full object-cover object-center"
+        style={{ position: "absolute", inset: 0 }}
+        fetchPriority="high"
       />
-      {/* Light tint overlays */}
+      {/* Subtle light tint so text stays readable */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(160deg,oklch(0.99 0.005 80/.68) 0%,oklch(0.97 0.008 230/.52) 55%,oklch(0.99 0.005 80/.64) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 110% 90% at 50% 50%,transparent 35%,oklch(0.92 0.01 250/.28) 100%)",
+            "linear-gradient(160deg,oklch(0.99 0.005 230/.55) 0%,oklch(0.97 0.006 240/.35) 55%,oklch(0.99 0.005 230/.50) 100%)",
         }}
       />
     </div>
   );
 }
 
-/** Full-page background. Dark mode: image (mobile/desktop responsive). Light mode: video. */
+/** Full-page background. Dark mode: globe image. Light mode: globe image. */
 export function VideoBackground() {
   const [isDark, setIsDark] = useState(
     () => document.documentElement.classList.contains("dark"),
@@ -165,7 +152,7 @@ export function VideoBackground() {
       style={{ willChange: "opacity" }}
     >
       <DarkImage  visible={isDark}  />
-      <LightVideo visible={!isDark} />
+      <LightImage visible={!isDark} />
     </div>
   );
 }

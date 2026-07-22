@@ -41,8 +41,8 @@ export function Hero() {
           zIndex: 2,
           pointerEvents: "none",
           backgroundImage: `
-            linear-gradient(rgba(60,100,220,0.07) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(60,100,220,0.07) 1px, transparent 1px)
+            linear-gradient(rgba(80,100,180,0.18) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(80,100,180,0.18) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
           backgroundPosition: "0 0",
