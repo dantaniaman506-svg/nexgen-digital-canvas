@@ -15,7 +15,7 @@ export function Hero() {
     <section id="hero" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 pt-24 pb-16 lg:pt-20">
       <GradientBlobs />
 
-      {/* Blueprint grid — dark mode only, sits above video, below content */}
+      {/* Blueprint grid — both themes, different opacity */}
       <div
         aria-hidden
         className="dark:block hidden"
@@ -27,6 +27,22 @@ export function Hero() {
           backgroundImage: `
             linear-gradient(rgba(99,140,255,0.10) 1px, transparent 1px),
             linear-gradient(90deg, rgba(99,140,255,0.10) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          backgroundPosition: "0 0",
+        }}
+      />
+      <div
+        aria-hidden
+        className="block dark:hidden"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          backgroundImage: `
+            linear-gradient(rgba(60,100,220,0.07) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(60,100,220,0.07) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
           backgroundPosition: "0 0",

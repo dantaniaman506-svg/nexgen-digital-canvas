@@ -57,41 +57,46 @@ function useKeepAlive(
   }, [visible, rate]);
 }
 
-function DarkVideo({ visible }: { visible: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  useKeepAlive(ref, visible, 1.4);
-
+/** Dark theme background — uses uploaded images instead of video.
+ *  Mobile: portrait image | Desktop (lg+): landscape image.
+ */
+function DarkImage({ visible }: { visible: boolean }) {
   return (
     <div
       className="absolute inset-0 transition-opacity duration-700"
       style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
-      <video
-        ref={ref}
-        loop
-        muted
-        playsInline
-        autoPlay
-        preload="auto"
-        disablePictureInPicture
-        className="h-full w-full object-cover"
-        src="/videos/jellyfish.mp4"
-        // iOS Safari extra attributes
-        {...({ "webkit-playsinline": "true", "x-webkit-airplay": "deny" } as object)}
+      {/* Mobile image (portrait) — hidden on lg+ */}
+      <img
+        src="/images/dark-bg-mobile.png"
+        alt=""
+        aria-hidden="true"
+        className="block lg:hidden h-full w-full object-cover object-center"
+        style={{ position: "absolute", inset: 0 }}
+        fetchPriority="high"
       />
-      {/* Dark tint overlays */}
+      {/* Desktop image (landscape) — hidden below lg */}
+      <img
+        src="/images/dark-bg-desktop.png"
+        alt=""
+        aria-hidden="true"
+        className="hidden lg:block h-full w-full object-cover object-center"
+        style={{ position: "absolute", inset: 0 }}
+        fetchPriority="high"
+      />
+      {/* Dark tint overlays — same as the original video overlays */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(160deg,oklch(0.08 0.04 265/.38) 0%,oklch(0.06 0.05 255/.28) 50%,oklch(0.08 0.04 265/.38) 100%)",
+            "linear-gradient(160deg,oklch(0.08 0.04 265/.28) 0%,oklch(0.06 0.05 255/.18) 50%,oklch(0.08 0.04 265/.28) 100%)",
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 130% 110% at 50% 50%,transparent 50%,oklch(0.04 0.03 265/.45) 100%)",
+            "radial-gradient(ellipse 130% 110% at 50% 50%,transparent 50%,oklch(0.04 0.03 265/.35) 100%)",
         }}
       />
     </div>
@@ -138,7 +143,7 @@ function LightVideo({ visible }: { visible: boolean }) {
   );
 }
 
-/** Full-page video background. Switches between jellyfish (dark) and light video on theme change. */
+/** Full-page background. Dark mode: image (mobile/desktop responsive). Light mode: video. */
 export function VideoBackground() {
   const [isDark, setIsDark] = useState(
     () => document.documentElement.classList.contains("dark"),
@@ -159,7 +164,7 @@ export function VideoBackground() {
       aria-hidden="true"
       style={{ willChange: "opacity" }}
     >
-      <DarkVideo  visible={isDark}  />
+      <DarkImage  visible={isDark}  />
       <LightVideo visible={!isDark} />
     </div>
   );
