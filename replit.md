@@ -49,3 +49,4 @@ All content (services, reviews, contact details, brand info) lives in `src/lib/s
 
 - Keep existing project structure — do not restructure or migrate without asking
 - Logo is currently an "N" letter mark (placeholder until real logo is provided)
+- Always push to GitHub after completing any task
