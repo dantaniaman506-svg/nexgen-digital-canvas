@@ -1,30 +1,37 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en-IN" class="light">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0f1e" />
+    <meta name="theme-color" content="#f8f9ff" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="keywords" content="digital marketing agency Ahmedabad, SEO agency Ahmedabad, social media marketing, website development, Google Ads, Meta Ads, branding" />
+    <meta name="geo.region" content="IN-GJ" />
+    <meta name="geo.placename" content="Ahmedabad, Gujarat" />
+    <meta name="geo.position" content="23.0891;72.6285" />
+    <meta name="ICBM" content="23.0891, 72.6285" />
     <!--
       THEME SCRIPT — runs synchronously before first paint, no flash.
-      Deploy stamp "20260717" forces everyone back to dark on this deploy.
+      This release intentionally starts new visitors in light mode.
       After that, localStorage saves the user's own choice per-browser.
     -->
     <script>
       (function () {
-        var DEPLOY = '20260717';
-        var stamp  = localStorage.getItem('ndm-deploy');
-        var saved  = localStorage.getItem('ndm-theme');
+        var DEPLOY = '20260827';
+        var stamp = localStorage.getItem('ndm-deploy');
+        var saved = localStorage.getItem('ndm-theme');
         if (stamp !== DEPLOY) {
-          // Old storage (pre this deploy) or first visit — reset everyone to dark.
+          // Reset the old release preference so this release opens in light mode.
           localStorage.removeItem('ndm-theme');
           localStorage.setItem('ndm-deploy', DEPLOY);
-          // HTML already has class="dark" — nothing else needed.
-        } else if (saved === 'light') {
-          // User explicitly picked light AFTER this deploy — honour it.
-          document.documentElement.classList.replace('dark', 'light');
         }
-        // saved === 'dark' or null → dark stays (class already set in HTML).
+        var useDark = stamp === DEPLOY && saved === 'dark';
+        document.documentElement.classList.toggle('dark', useDark);
+        document.documentElement.classList.toggle('light', !useDark);
       })();
     </script>
     <title>Nexgen — Digital Marketing &amp; Growth Agency in Ahmedabad</title>
@@ -33,14 +40,24 @@
       content="Nexgen Digital Marketing Solutions — Ahmedabad's growth partner for social media, SEO, Google &amp; Meta ads, websites and apps. We turn ideas into impact."
     />
     <meta name="author" content="Nexgen Digital Marketing Solutions" />
+    <link rel="canonical" href="https://digitalmarketingsolution.in/" />
     <meta property="og:site_name" content="Nexgen Digital Marketing Solutions" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://digitalmarketingsolution.in/" />
     <meta property="og:title" content="Nexgen — Digital Marketing &amp; Growth Agency" />
     <meta
       property="og:description"
       content="Creative digital marketing agency in Ahmedabad. Social media, SEO, ads, websites &amp; branding — engineered to grow your brand."
     />
+    <meta property="og:image" content="https://digitalmarketingsolution.in/logos/ndm-light.png" />
+    <meta property="og:image:alt" content="Nexgen Digital Marketing logo" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nexgen — Digital Marketing &amp; Growth Agency" />
+    <meta
+      name="twitter:description"
+      content="Creative digital marketing agency in Ahmedabad. Social media, SEO, ads, websites &amp; branding — engineered to grow your brand."
+    />
+    <meta name="twitter:image" content="https://digitalmarketingsolution.in/logos/ndm-light.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -51,5 +68,39 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "https://digitalmarketingsolution.in/#business",
+        "name": "Nexgen Digital Marketing Solutions",
+        "url": "https://digitalmarketingsolution.in/",
+        "logo": "https://digitalmarketingsolution.in/logos/ndm-light.png",
+        "image": "https://digitalmarketingsolution.in/logos/ndm-light.png",
+        "description": "Digital marketing, SEO, website development, branding and paid advertising services for growing businesses in Ahmedabad and across India.",
+        "telephone": "+91-96649-46844",
+        "email": "hello@nexgendigital.in",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "The Emporio, 412, Visat, Sarkhej-Gandhinagar Highway, opposite 4D Square Mall, Motera",
+          "addressLocality": "Ahmedabad",
+          "addressRegion": "Gujarat",
+          "postalCode": "382424",
+          "addressCountry": "IN"
+        },
+        "areaServed": [
+          { "@type": "City", "name": "Ahmedabad" },
+          { "@type": "Country", "name": "India" }
+        ],
+        "serviceType": [
+          "Digital Marketing",
+          "Search Engine Optimization",
+          "Social Media Marketing",
+          "Website Development",
+          "Branding",
+          "Performance Marketing"
+        ]
+      }
+    </script>
   </body>
 </html>

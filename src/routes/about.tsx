@@ -62,9 +62,9 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* ── Marketing image card ────────────────────────────────────────── */}
+      {/* ── Team profile card ────────────────────────────────────────────── */}
       <section className="relative px-5 pb-4 pt-2">
-        <div className="mx-auto max-w-sm">
+        <div className="mx-auto max-w-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.93, y: 28 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -79,7 +79,7 @@ function AboutPage() {
               style={{
                 position: "absolute",
                 inset: 0,
-                borderRadius: "1.75rem",
+                borderRadius: "2rem",
                 padding: 2,
                 background: "linear-gradient(135deg, #6C5CE7 0%, #4F7FFF 45%, #00B4D8 100%)",
                 zIndex: 0,
@@ -88,18 +88,32 @@ function AboutPage() {
             <div
               className="relative overflow-hidden"
               style={{
-                borderRadius: "1.625rem",
+                borderRadius: "1.875rem",
                 boxShadow:
                   "0 24px 64px -12px rgba(79,127,255,0.35), 0 4px 20px rgba(0,0,0,0.22)",
                 zIndex: 1,
               }}
             >
               <img
-                src="/images/about-marketing.jpg"
-                alt="Nexgen Digital Marketing – Website & WordPress Solutions"
-                className="w-full h-auto block"
+                src="/images/vedant-prajapati.jpg"
+                alt="Vedant Prajapati, Nexgen Digital Marketing Solutions"
+                className="block aspect-[4/5] w-full object-cover object-[50%_24%]"
                 loading="eager"
+                decoding="async"
               />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-[#050817]/90 via-[#050817]/10 to-transparent"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">
+                  Nexgen Digital Marketing
+                </p>
+                <h2 className="mt-2 font-display text-2xl font-extrabold text-white sm:text-3xl">
+                  Vedant Prajapati
+                </h2>
+                <p className="mt-1 text-sm text-white/75">Growth &amp; Digital Strategy</p>
+              </div>
             </div>
           </motion.div>
         </div>

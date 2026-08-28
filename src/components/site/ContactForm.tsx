@@ -34,7 +34,7 @@ const recipients = [
     initials: CONTACT.phone1Name.split(" ").map((n: string) => n[0]).join("").slice(0, 2),
   },
   {
-    id: "prem",
+    id: "support",
     name: CONTACT.phone2Name,
     phone: CONTACT.phone2,
     wa: CONTACT.phone2Tel,

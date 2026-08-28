@@ -30,7 +30,7 @@ export const BRAND = {
   name: "Nexgen",
   fullName: "Nexgen Digital Marketing Solutions",
   tagline: "Digital Marketing & Growth Agency",
-  logoUrl: "/__l5e/assets-v1/65200df9-0827-40cd-89c4-71c9a1d2612a/nexgen-logo.png",
+  logoUrl: "/logos/ndm-light.png",
 };
 
 export const CONTACT = {
@@ -39,7 +39,7 @@ export const CONTACT = {
   phone1Name: "Vedant Prajapati",
   phone2: "+91 97149 34644",
   phone2Tel: "+919714934644",
-  phone2Name: "Prem Jain",
+  phone2Name: "Nexgen Support",
   whatsappNumber: "919664946844",
   email: "hello@nexgendigital.in",
   address:

@@ -3,7 +3,7 @@ import { Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { soundLightMode, soundDarkMode } from "@/lib/sound";
 
-const DEPLOY = "20260717";
+const DEPLOY = "20260827";
 
 function applyTheme(dark: boolean) {
   const html = document.documentElement;
@@ -19,7 +19,7 @@ function applyTheme(dark: boolean) {
   localStorage.setItem("ndm-deploy", DEPLOY);
 }
 
-/** Sun/moon toggle — dark is the default. Persists choice in localStorage per browser. */
+/** Sun/moon toggle — light is the default. Persists choice in localStorage per browser. */
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(
     () => document.documentElement.classList.contains("dark"),
