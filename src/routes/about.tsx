@@ -64,6 +64,19 @@ function AboutPage() {
 
       {/* ── Team profile card ────────────────────────────────────────────── */}
       <section className="relative px-5 pb-4 pt-2">
+        <div className="mx-auto max-w-5xl">
+          <div className="mx-auto mb-7 max-w-xl text-center">
+            <p className="text-brand-blue font-display text-sm font-semibold tracking-[0.22em] uppercase">
+              Founder &amp; Owner
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-extrabold sm:text-4xl">
+              Meet the <span className="text-brand-gradient">person behind Nexgen</span>
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Vedant Prajapati leads Nexgen Digital Marketing Solutions with a clear focus on
+              meaningful growth, strong creative work, and long-term client partnerships.
+            </p>
+          </div>
         <div className="mx-auto max-w-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.93, y: 28 }}
@@ -71,7 +84,6 @@ function AboutPage() {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.65 }}
             whileHover={{ scale: 1.04, y: -5, transition: { type: "spring", stiffness: 450, damping: 22 } }}
-            whileTap={{ scale: 1.07, y: -6, transition: { type: "spring", stiffness: 550, damping: 20 } }}
             className="relative cursor-pointer"
           >
             {/* Gradient border ring */}
@@ -89,16 +101,22 @@ function AboutPage() {
               className="relative overflow-hidden"
               style={{
                 borderRadius: "1.875rem",
+                background: "linear-gradient(160deg, #101d56 0%, #0b3d70 55%, #071326 100%)",
                 boxShadow:
                   "0 24px 64px -12px rgba(79,127,255,0.35), 0 4px 20px rgba(0,0,0,0.22)",
                 zIndex: 1,
               }}
             >
+              <div className="absolute left-5 top-5 z-10 rounded-full border border-white/20 bg-[#071326]/65 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100 backdrop-blur-sm">
+                Founder &amp; Owner
+              </div>
               <img
                 src="/images/vedant-prajapati.jpg"
-                alt="Vedant Prajapati, Nexgen Digital Marketing Solutions"
-                className="block aspect-[4/5] w-full object-cover object-[50%_24%]"
-                loading="eager"
+                alt="Vedant Prajapati, Founder and Owner of Nexgen Digital Marketing Solutions"
+                className="block aspect-[3/4] w-full object-cover object-[50%_18%]"
+                width="768"
+                height="1024"
+                loading="lazy"
                 decoding="async"
               />
               <div
@@ -112,10 +130,11 @@ function AboutPage() {
                 <h2 className="mt-2 font-display text-2xl font-extrabold text-white sm:text-3xl">
                   Vedant Prajapati
                 </h2>
-                <p className="mt-1 text-sm text-white/75">Growth &amp; Digital Strategy</p>
+                <p className="mt-1 text-sm text-white/75">Founder &amp; Owner</p>
               </div>
             </div>
           </motion.div>
+        </div>
         </div>
       </section>
 

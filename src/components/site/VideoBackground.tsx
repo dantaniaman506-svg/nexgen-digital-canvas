@@ -66,24 +66,16 @@ function DarkImage({ visible }: { visible: boolean }) {
       className="absolute inset-0 transition-opacity duration-700"
       style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
-      {/* Mobile image (portrait) — hidden on lg+ */}
-      <img
-        src="/images/dark-bg-mobile.png"
-        alt=""
-        aria-hidden="true"
-        className="block lg:hidden h-full w-full object-cover object-center"
-        style={{ position: "absolute", inset: 0 }}
-        fetchPriority="high"
-      />
-      {/* Desktop image (landscape) — hidden below lg */}
-      <img
-        src="/images/dark-bg-desktop.png"
-        alt=""
-        aria-hidden="true"
-        className="hidden lg:block h-full w-full object-cover object-center"
-        style={{ position: "absolute", inset: 0 }}
-        fetchPriority="high"
-      />
+      <picture className="absolute inset-0 block h-full w-full">
+        <source media="(min-width: 1024px)" srcSet="/images/dark-bg-desktop.png" />
+        <img
+          src="/images/dark-bg-mobile.png"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-center"
+          fetchPriority="high"
+        />
+      </picture>
       {/* Dark tint overlays — same as the original video overlays */}
       <div
         className="absolute inset-0"
@@ -110,24 +102,16 @@ function LightImage({ visible }: { visible: boolean }) {
       className="absolute inset-0 transition-opacity duration-700"
       style={{ opacity: visible ? 1 : 0, pointerEvents: "none" }}
     >
-      {/* Mobile image (portrait) — hidden on lg+ */}
-      <img
-        src="/images/light-bg-mobile.png"
-        alt=""
-        aria-hidden="true"
-        className="block lg:hidden h-full w-full object-cover object-center"
-        style={{ position: "absolute", inset: 0 }}
-        fetchPriority="high"
-      />
-      {/* Desktop image (landscape) — hidden below lg */}
-      <img
-        src="/images/light-bg-desktop.png"
-        alt=""
-        aria-hidden="true"
-        className="hidden lg:block h-full w-full object-cover object-center"
-        style={{ position: "absolute", inset: 0 }}
-        fetchPriority="high"
-      />
+      <picture className="absolute inset-0 block h-full w-full">
+        <source media="(min-width: 1024px)" srcSet="/images/light-bg-desktop.png" />
+        <img
+          src="/images/light-bg-mobile.png"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-center"
+          fetchPriority="high"
+        />
+      </picture>
       {/* Subtle light tint so text stays readable */}
       <div
         className="absolute inset-0"
@@ -161,8 +145,7 @@ export function VideoBackground() {
       aria-hidden="true"
       style={{ willChange: "opacity" }}
     >
-      <DarkImage  visible={isDark}  />
-      <LightImage visible={!isDark} />
+      {isDark ? <DarkImage visible /> : <LightImage visible />}
     </div>
   );
 }

@@ -38,7 +38,9 @@ const recipients = [
     name: CONTACT.phone2Name,
     phone: CONTACT.phone2,
     wa: CONTACT.phone2Tel,
-    initials: CONTACT.phone2Name.split(" ").map((n: string) => n[0]).join("").slice(0, 2),
+    initials: CONTACT.phone2Name
+      ? CONTACT.phone2Name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)
+      : "WA",
   },
 ];
 
@@ -386,10 +388,12 @@ export function ContactForm({ dense = false, initialService = "" }: { dense?: bo
 
                       {/* Info */}
                       <div className="min-w-0 flex-1">
-                        <p className="font-display font-semibold text-white text-base leading-tight">
-                          {r.name}
-                        </p>
-                        <p className="mt-0.5 text-sm text-white/50 font-mono tracking-wide">
+                        {r.name && (
+                          <p className="font-display font-semibold text-white text-base leading-tight">
+                            {r.name}
+                          </p>
+                        )}
+                        <p className={`${r.name ? "mt-0.5" : ""} text-sm text-white/50 font-mono tracking-wide`}>
                           {r.phone}
                         </p>
                       </div>

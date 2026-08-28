@@ -1,38 +1,28 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 
 export function GradientBlobs() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -140]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const rot = useTransform(scrollYProgress, [0, 1], [0, 25]);
-
   return (
-    <div ref={ref} className="pointer-events-none absolute inset-0" style={{ overflow: "clip" }}>
+    <div className="pointer-events-none absolute inset-0" style={{ overflow: "clip" }}>
       {/* Corner blob — top left, soft */}
       <motion.div
         style={{
-          y: y1,
-          rotate: rot,
           top: "-18%",
           left: "-18%",
           background:
             "radial-gradient(circle, color-mix(in oklab, var(--brand-blue) 45%, transparent), transparent 70%)",
         }}
-        className="animate-blob absolute h-[520px] w-[520px] rounded-full blur-[130px] opacity-70"
+        className="ambient-blob ambient-blob-primary animate-blob absolute h-[520px] w-[520px] rounded-full blur-[130px] opacity-70"
       />
       {/* Corner blob — bottom right */}
       <motion.div
         style={{
-          y: y2,
           bottom: "-20%",
           right: "-18%",
           animationDelay: "6s",
           background:
             "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 40%, transparent), transparent 70%)",
         }}
-        className="animate-blob absolute h-[520px] w-[520px] rounded-full blur-[130px] opacity-60"
+        className="ambient-blob ambient-blob-secondary animate-blob absolute h-[520px] w-[520px] rounded-full blur-[130px] opacity-60"
       />
 
       {/* Blue-tinted grid — no central vignette, subtle everywhere */}
@@ -78,7 +68,7 @@ export function GradientBlobs() {
             background: "var(--brand-cyan)",
             boxShadow: "0 0 12px var(--brand-blue)",
           }}
-          className="absolute rounded-full"
+          className="ambient-particle absolute rounded-full"
         />
       ))}
 
@@ -87,7 +77,7 @@ export function GradientBlobs() {
         initial={{ y: "-100%" }}
         animate={{ y: "100%" }}
         transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-x-0 h-40"
+        className="ambient-scanline absolute inset-x-0 h-40"
         style={{
           background:
             "linear-gradient(to bottom, transparent, color-mix(in oklab, var(--brand-blue) 8%, transparent), transparent)",

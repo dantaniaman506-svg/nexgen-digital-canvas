@@ -39,7 +39,7 @@ export const CONTACT = {
   phone1Name: "Vedant Prajapati",
   phone2: "+91 97149 34644",
   phone2Tel: "+919714934644",
-  phone2Name: "Nexgen Support",
+  phone2Name: "",
   whatsappNumber: "919664946844",
   email: "hello@nexgendigital.in",
   address:

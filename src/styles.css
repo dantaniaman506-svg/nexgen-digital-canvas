@@ -312,6 +312,25 @@
   }
 }
 
+/* Keep mobile scrolling responsive: avoid expensive blur and decorative RAF work. */
+@media (max-width: 767px) {
+  .ambient-blob {
+    filter: blur(88px) !important;
+    animation: none;
+  }
+  .ambient-blob-secondary,
+  .ambient-particle,
+  .ambient-scanline {
+    display: none;
+  }
+  .glass,
+  .glass-strong {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: color-mix(in oklab, var(--card) 82%, transparent);
+  }
+}
+
 /* ─── Global smoothness ──────────────────────────────────────────────── */
 html {
   -webkit-tap-highlight-color: transparent; /* remove grey flash on mobile tap */
